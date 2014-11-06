@@ -1,0 +1,20 @@
+// ========== Dependencies ==============================================
+
+dependencies {
+    // --------------------- PROJECTS ------------------------------------
+    compile project(":common.rest:common.rest.api")
+    compile project(":common.utils")
+    compile project(":common.status")
+    compile project(":common.exceptions")
+
+    // --------------------- HTTP ----------------------------------------
+    compile "org.apache.httpcomponents:httpcore:${rev_httpcore}"
+    compile "org.apache.httpcomponents:httpclient:${rev_httpclient}"
+    compile "javax.servlet:javax.servlet-api:${rev_servlet_api}"
+
+    // --------------------- COMMONS -------------------------------------
+    compile "commons-io:commons-io:${rev_commons_io}"
+
+    // --------------------- OBJECT VALIDATION ---------------------------
+    compile "net.sf.oval:oval:${rev_oval}"
+}

@@ -1,0 +1,8 @@
+// ========== Dependencies ==============================================
+
+dependencies {
+    // --------------------- PROJECTS ------------------------------------
+    compile project(":common.soap:common.soap.api")
+    compile project(":common.utils")
+    compile project(":common.status")
+}

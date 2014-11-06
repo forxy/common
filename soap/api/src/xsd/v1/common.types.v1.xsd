@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="urn:common:types:v1"
+           xmlns:common="urn:common:types:v1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="Char">
+        <xs:restriction base="xs:string">
+            <xs:length value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="NonEmptyToken">
+        <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="GUID">
+        <xs:restriction base="common:NonEmptyToken">
+            <xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="EmailAddressType">
+        <xs:annotation>
+            <xs:documentation>Email address</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="common:NonEmptyToken">
+            <xs:pattern
+                    value="[a-zA-Z0-9!#$%&amp;'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="PageInfoType">
+        <xs:attribute name="Number" type="xs:int" use="required"/>
+        <xs:attribute name="Size" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="PageType">
+        <xs:complexContent>
+            <xs:extension base="common:PageInfoType">
+                <xs:attribute name="Total" type="xs:long"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MessageInfoType">
+        <xs:attribute name="TransactionGUID" type="common:GUID" use="required"/>
+        <xs:attribute name="CreateDate" type="xs:dateTime" use="required"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="RequestInfoType">
+        <xs:sequence>
+            <xs:element name="Requester" type="common:NonEmptyToken"/>
+            <xs:element name="MessageInfo" type="common:MessageInfoType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RequestType">
+        <xs:sequence>
+            <xs:element name="RequestInfo" type="common:RequestInfoType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ResponseStatusType">
+        <xs:sequence>
+            <xs:element name="StatusCode" type="xs:token"/>
+            <xs:element name="StatusMessage" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResponseInfoType">
+        <xs:sequence>
+            <xs:element name="Responder" type="common:NonEmptyToken" minOccurs="1"/>
+            <xs:element name="ResponseStatus" type="common:ResponseStatusType" minOccurs="1"/>
+            <xs:element name="RequestInfo" type="common:RequestInfoType" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResponseType">
+        <xs:sequence>
+            <xs:element name="ResponseInfo" type="common:ResponseInfoType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ErrorType">
+        <xs:sequence>
+            <xs:element name="ErrorType" type="common:NonEmptyToken"/>
+            <xs:element name="ErrorMessage" type="common:NonEmptyToken"/>
+            <xs:element name="StackTrace" type="common:NonEmptyToken" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ErrorListType">
+        <xs:sequence>
+            <xs:element name="Error" type="common:ErrorType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="FaultType">
+        <xs:sequence>
+            <xs:element name="ErrorList" type="common:ErrorListType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

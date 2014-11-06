@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+    <Listener className="org.apache.catalina.core.JasperListener"/>
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+    <GlobalNamingResources>
+        <Resource description="User database that can be updated and saved" name="UserDatabase"
+                  factory="org.apache.catalina.users.MemoryUserDatabaseFactory" pathname="conf/tomcat-users.xml"
+                  type="org.apache.catalina.UserDatabase" token="Container"/>
+    </GlobalNamingResources>
+    <Service name="Catalina">
+        <Connector port="10080" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="10090"/>
+        <Connector port="10090" SSLEnabled="true" keystoreType="JKS" maxSpareThreads="200" truststorePass=""
+                   maxHttpHeaderSize="8192" disableUploadTimeout="true" minSpareThreads="25" keystoreFile=""
+                   secure="true" maxThreads="150" acceptCount="100" enableLookups="false" sslProtocol="TLS"
+                   keystorePass="" scheme="https" truststoreFile="" keyAlias="" truststoreType="JKS"
+                   clientAuth="false"/>
+        <Connector port="10009" protocol="AJP/1.3" redirectPort="10090"/>
+        <Engine name="Catalina" defaultHost="localhost">
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+            </Realm>
+            <Host name="localhost" autoDeploy="true" unpackWARs="true" appBase="webapps">
+                <Valve pattern="%h %l %u %t &amp;quot;%r&amp;quot; %s %b" directory="logs"
+                       prefix="localhost_access_log." className="org.apache.catalina.valves.AccessLogValve"
+                       suffix=".txt"/>
+            </Host>
+        </Engine>
+    </Service>
+</Server>

@@ -1,0 +1,7 @@
+dependencies {
+    // --------------------- LOGGING -------------------------------------
+    compile "org.slf4j:slf4j-api:${rev_slf4j}"
+
+    // --------------------- COMMONS -------------------------------------
+    compile "commons-lang:commons-lang:${rev_commons_lang}"
+}

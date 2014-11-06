@@ -1,0 +1,23 @@
+rootProject.name = project_name
+
+def projects = [
+        ':deploy': [name: "common.deploy", path: 'deploy'],
+        ':concurrent': [name: "common.concurrent", path: 'concurrent'],
+        ':logging': [name: "common.logging", path: 'logging'],
+        ':spring-support': [name: "common.spring-support", path: 'spring-support'],
+        ':exceptions': [name: "common.exceptions", path: 'exceptions'],
+        ':status': [name: "common.status", path: 'status'],
+        ':utils': [name: "common.utils", path: 'utils'],
+        ':rest': [name: "common.rest", path: 'rest'],
+        ':test-utils': [name: "common.test-utils", path: 'test-utils'],
+        ':common.rest:api': [name: "common.rest.api", path: 'rest/api'],
+        ':soap': [name: "common.soap", path: 'soap'],
+        ':common.soap:api': [name: "common.soap.api", path: 'soap/api']
+]
+
+projects.each() { key, config ->
+    include key
+    def prj = project(key)
+    prj.name = config.name
+    prj.projectDir = file("$settingsDir/$config.path")
+}
