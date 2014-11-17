@@ -3,99 +3,94 @@ package common.exceptions;
 /**
  * Event log id enumeration that describes common rest webservice specific events
  */
-public enum HttpEventLogId implements EventLogBase
-{
+public enum HttpEventLogID implements EventLogBase {
+
     // -------------------------------------------------------------------
     // Common events
     // -------------------------------------------------------------------
 
-    InvalidClientInput(HttpEventLogId.BASE_EVENT_LOG_ID + 400, 400,
+    InvalidClientInput(HttpEventLogID.BASE_EVENT_LOG_ID + 400, 400,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    ValidationException(HttpEventLogId.BASE_EVENT_LOG_ID + 400, 400,
+    ValidationException(HttpEventLogID.BASE_EVENT_LOG_ID + 400, 400,
             "Validation rule violation. Details: %1$s",
             EventType.InvalidInput),
 
-    Unauthorized(HttpEventLogId.BASE_EVENT_LOG_ID + 401, 401,
+    Unauthorized(HttpEventLogID.BASE_EVENT_LOG_ID + 401, 401,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    AccessDenied(HttpEventLogId.BASE_EVENT_LOG_ID + 404, 403,
+    AccessDenied(HttpEventLogID.BASE_EVENT_LOG_ID + 404, 403,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    ResourceNotFound(HttpEventLogId.BASE_EVENT_LOG_ID + 404, 404,
+    ResourceNotFound(HttpEventLogID.BASE_EVENT_LOG_ID + 404, 404,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    UnexpectedException(HttpEventLogId.BASE_EVENT_LOG_ID + 500, 500,
+    UnexpectedException(HttpEventLogID.BASE_EVENT_LOG_ID + 500, 500,
             "Unexpected unhandled exception. Details: %1$s",
-                        EventType.InternalError),
+            EventType.InternalError),
 
+    // -------------------------------------------------------------------
+    // Network events
+    // -------------------------------------------------------------------
 
-    SSLConnectivityException(HttpEventLogId.BASE_EVENT_LOG_ID, 403,
+    SSLConnectivityException(HttpEventLogID.BASE_EVENT_LOG_ID, 403,
             "Error during SSL communication. Details: %1$s",
             EventType.InvalidInput),
 
-    SocketTimeoutException(HttpEventLogId.BASE_EVENT_LOG_ID + 501, 501,
+    SocketTimeoutException(HttpEventLogID.BASE_EVENT_LOG_ID + 501, 501,
             "Timeout. Details: %1$s",
             EventType.InternalError),
 
-    ServiceUnavailableException(HttpEventLogId.BASE_EVENT_LOG_ID + 503, 503,
+    ServiceUnavailableException(HttpEventLogID.BASE_EVENT_LOG_ID + 503, 503,
             "Service is not available. Details: %1$s",
             EventType.InternalError);
 
 
-
     public static final int BASE_EVENT_LOG_ID = 1000;
 
-    private Level m_logLevel;
-    private String m_formatString;
-    private int m_eventId;
-    private int m_responseId;
-    private EventType m_eventType;
+    private Level logLevel;
+    private String formatString;
+    private int eventID;
+    private int responseID;
+    private EventType eventType;
 
-    private HttpEventLogId(final int eventId, final int responseId, final String formatString, final EventType eventType)
-    {
-        this(eventId, responseId, Level.ERROR, formatString, eventType);
+    private HttpEventLogID(final int eventID, final int responseID, final String formatString, final EventType eventType) {
+        this(eventID, responseID, Level.ERROR, formatString, eventType);
     }
 
-    private HttpEventLogId(final int eventId, final int responseId, final Level level, final String formatString,
-                           final EventType eventType)
-    {
-        m_eventId = eventId;
-        m_responseId = responseId;
-        m_logLevel = level;
-        m_formatString = formatString;
-        m_eventType = eventType;
-    }
-
-    @Override
-    public int getEventId()
-    {
-        return m_eventId;
-    }
-
-    public int getResponseId()
-    {
-        return m_responseId;
+    private HttpEventLogID(final int eventID, final int responseID, final Level logLevel, final String formatString,
+                           final EventType eventType) {
+        this.eventID = eventID;
+        this.responseID = responseID;
+        this.logLevel = logLevel;
+        this.formatString = formatString;
+        this.eventType = eventType;
     }
 
     @Override
-    public Level getLogLevel()
-    {
-        return m_logLevel;
+    public int getEventID() {
+        return eventID;
+    }
+
+    public int getResponseID() {
+        return responseID;
     }
 
     @Override
-    public EventType getEventType()
-    {
-        return m_eventType;
+    public Level getLogLevel() {
+        return logLevel;
     }
 
-    public String getMessage(final Object... arguments)
-    {
-        return arguments != null && arguments.length > 0 ? String.format(m_formatString, arguments) : m_formatString;
+    @Override
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public String getMessage(final Object... arguments) {
+        return arguments != null && arguments.length > 0 ? String.format(formatString, arguments) : formatString;
     }
 }

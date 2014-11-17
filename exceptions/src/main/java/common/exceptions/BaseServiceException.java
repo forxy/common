@@ -8,33 +8,33 @@ public abstract class BaseServiceException extends RuntimeException {
 
     private static final long serialVersionUID = -6662646336105989846L;
 
-    private final EventLogBase m_eventLogId;
+    private final EventLogBase eventLogID;
 
-    public BaseServiceException(final String message, final EventLogBase eventLogId) {
+    public BaseServiceException(final String message, final EventLogBase eventLogID) {
         super(message);
-        m_eventLogId = eventLogId;
+        this.eventLogID = eventLogID;
     }
 
-    public BaseServiceException(final EventLogBase eventLogId) {
-        super(eventLogId.getMessage());
-        m_eventLogId = eventLogId;
+    public BaseServiceException(final EventLogBase eventLogID) {
+        super(eventLogID.getMessage());
+        this.eventLogID = eventLogID;
     }
 
-    public BaseServiceException(final Throwable cause, final String message, final EventLogBase eventLogId) {
+    public BaseServiceException(final Throwable cause, final String message, final EventLogBase eventLogID) {
         super(message, cause);
-        m_eventLogId = eventLogId;
+        this.eventLogID = eventLogID;
     }
 
-    public BaseServiceException(final Throwable cause, final EventLogBase eventLogId) {
-        super(eventLogId.getMessage(cause.getMessage()), cause);
-        m_eventLogId = eventLogId;
+    public BaseServiceException(final Throwable cause, final EventLogBase eventLogID) {
+        super(eventLogID.getMessage(cause.getMessage()), cause);
+        this.eventLogID = eventLogID;
     }
 
-    public EventLogBase getEventLogId() {
-        return m_eventLogId;
+    public EventLogBase getEventLogID() {
+        return eventLogID;
     }
 
     public int getStatusCode() {
-        return m_eventLogId.getEventId();
+        return eventLogID.getEventID();
     }
 }

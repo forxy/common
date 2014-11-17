@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.CollectionType;
 import org.codehaus.jackson.map.type.TypeFactory;
 import common.exceptions.ClientException;
-import common.exceptions.HttpEventLogId;
+import common.exceptions.HttpEventLogID;
 import common.pojo.StatusEntity;
 import common.utils.ValidationUtils;
 
@@ -55,7 +55,7 @@ public abstract class RestServiceClientSupport {
         try {
             return mapper.writeValueAsString(obj);
         } catch (final IOException e) {
-            throw new ClientException(null, e, HttpEventLogId.UnexpectedException, e.getMessage());
+            throw new ClientException(null, e, HttpEventLogID.UnexpectedException, e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class RestServiceClientSupport {
         try {
             return mapper.readValue(new InputStreamReader(json), clazz);
         } catch (final IOException e) {
-            throw new ClientException(null, e, HttpEventLogId.UnexpectedException, e.getMessage());
+            throw new ClientException(null, e, HttpEventLogID.UnexpectedException, e.getMessage());
         }
     }
 
@@ -92,18 +92,18 @@ public abstract class RestServiceClientSupport {
         final StatusEntity error = response.getError();
         if (error != null) {
             if (String.valueOf(HttpStatus.SC_FORBIDDEN).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogId.AccessDenied);
+                throw new ClientException(error, HttpEventLogID.AccessDenied);
             } else if (String.valueOf(HttpStatus.SC_UNAUTHORIZED).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogId.Unauthorized);
+                throw new ClientException(error, HttpEventLogID.Unauthorized);
             } else if (String.valueOf(HttpStatus.SC_NOT_FOUND).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogId.ResourceNotFound);
+                throw new ClientException(error, HttpEventLogID.ResourceNotFound);
             } else if (String.valueOf(HttpStatus.SC_BAD_REQUEST).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogId.InvalidClientInput);
+                throw new ClientException(error, HttpEventLogID.InvalidClientInput);
             }
             throw processErrorResponse(error);
         } else {
             if (response.getResource() == null && response.getHttpStatusCode() != HttpStatus.SC_NO_CONTENT) {
-                throw new ClientException(null, HttpEventLogId.UnexpectedException, "Response object is not " +
+                throw new ClientException(null, HttpEventLogID.UnexpectedException, "Response object is not " +
                         "initialized when instance with payload data is expected.");
             }
             return response.getResource();
@@ -117,7 +117,7 @@ public abstract class RestServiceClientSupport {
      * @return Client exception that is to be thrown
      */
     protected ClientException processErrorResponse(final StatusEntity error) {
-        return new ClientException(error, HttpEventLogId.UnexpectedException,
+        return new ClientException(error, HttpEventLogID.UnexpectedException,
                 error != null ? "Error code: " + error.getCode() : "N/A");
     }
 
@@ -132,11 +132,11 @@ public abstract class RestServiceClientSupport {
     protected void validateGUID(final String name, final String value, final boolean allowEmpty)
             throws ClientException {
         if (StringUtils.isBlank(value) && !allowEmpty) {
-            throw new ClientException(null, HttpEventLogId.InvalidClientInput,
+            throw new ClientException(null, HttpEventLogID.InvalidClientInput,
                     "Parameter '" + name + "' should not be empty");
         }
         if (!StringUtils.isBlank(value) && !ValidationUtils.isValidGUID(value)) {
-            throw new ClientException(null, HttpEventLogId.InvalidClientInput,
+            throw new ClientException(null, HttpEventLogID.InvalidClientInput,
                     "Parameter '" + name + "' is not in GUID format");
         }
     }

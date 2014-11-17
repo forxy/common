@@ -21,12 +21,12 @@ public class DatabaseExceptionHandler implements IExceptionHandler {
         //noinspection ThrowableResultOfMethodCallIgnored
         Throwable cause = ExceptionUtils.getRootCause(t);
         if (cause instanceof ConnectException) {
-            throw new ServiceException(LoggingCommonEventLogId.DatabaseIsNotAvailable, host,
+            throw new ServiceException(LoggingCommonEventLogID.DatabaseIsNotAvailable, host,
                     cause.getMessage());
         } else if (cause instanceof SocketTimeoutException) {
-            throw new ServiceException(LoggingCommonEventLogId.DatabaseTimeout, host, cause.getMessage());
+            throw new ServiceException(LoggingCommonEventLogID.DatabaseTimeout, host, cause.getMessage());
         } else {
-            throw new ServiceException(LoggingCommonEventLogId.UnknownDataBaseException,
+            throw new ServiceException(LoggingCommonEventLogID.UnknownDataBaseException,
                     cause != null ? cause.getMessage() : t != null ? t.getMessage() : "N/A");
         }
     }

@@ -12,33 +12,33 @@ public class ClientException extends ServiceException {
 
     private final StatusEntity errorEntity;
 
-    public ClientException(StatusEntity errorEntity, String message, EventLogBase eventLogId) {
-        super(message, eventLogId);
+    public ClientException(StatusEntity errorEntity, String message, EventLogBase eventLogID) {
+        super(message, eventLogID);
         this.errorEntity = errorEntity;
     }
 
-    public ClientException(StatusEntity errorEntity, EventLogBase eventLogId) {
-        super(eventLogId);
+    public ClientException(StatusEntity errorEntity, EventLogBase eventLogID) {
+        super(eventLogID);
         this.errorEntity = errorEntity;
     }
 
-    public ClientException(StatusEntity errorEntity, Throwable cause, String message, EventLogBase eventLogId) {
-        super(cause, message, eventLogId);
+    public ClientException(StatusEntity errorEntity, Throwable cause, String message, EventLogBase eventLogID) {
+        super(cause, message, eventLogID);
         this.errorEntity = errorEntity;
     }
 
-    public ClientException(StatusEntity errorEntity, Throwable cause, EventLogBase eventLogId, Object... args) {
-        super(cause, eventLogId, args);
+    public ClientException(StatusEntity errorEntity, Throwable cause, EventLogBase eventLogID, Object... args) {
+        super(cause, eventLogID, args);
         this.errorEntity = errorEntity;
     }
 
-    public ClientException(StatusEntity errorEntity, EventLogBase eventLogId, Object... args) {
-        super(eventLogId, args);
+    public ClientException(StatusEntity errorEntity, EventLogBase eventLogID, Object... args) {
+        super(eventLogID, args);
         this.errorEntity = errorEntity;
     }
 
-    public ClientException(StatusEntity errorEntity, Throwable cause, EventLogBase eventLogId) {
-        super(cause, eventLogId);
+    public ClientException(StatusEntity errorEntity, Throwable cause, EventLogBase eventLogID) {
+        super(cause, eventLogID);
         this.errorEntity = errorEntity;
     }
 

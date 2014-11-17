@@ -2,9 +2,10 @@ package common.exceptions;
 
 
 public interface EventLogBase {
-    int getEventId();
 
-    int getResponseId();
+    int getEventID();
+
+    int getResponseID();
 
     Level getLogLevel();
 

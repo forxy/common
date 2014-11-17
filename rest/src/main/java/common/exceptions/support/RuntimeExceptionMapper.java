@@ -5,7 +5,7 @@
 
 package common.exceptions.support;
 
-import common.exceptions.HttpEventLogId;
+import common.exceptions.HttpEventLogID;
 import common.exceptions.ValidationException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -36,16 +36,16 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
         if (re instanceof ValidationException) {
             ex = (ValidationException) re;
             response = ResponseBuilder.build(
-                    Response.Status.fromStatusCode(ex.getEventLogId().getResponseId()),
+                    Response.Status.fromStatusCode(ex.getEventLogID().getResponseID()),
                     ((ValidationException) re).getMessages());
         } else if(re instanceof ServiceException) {
             ex = (ServiceException) re;
             response = ResponseBuilder.build(
-                    Response.Status.fromStatusCode(ex.getEventLogId().getResponseId()),
-                    String.valueOf(ex.getEventLogId().getEventId()), ex.getMessage());
+                    Response.Status.fromStatusCode(ex.getEventLogID().getResponseID()),
+                    String.valueOf(ex.getEventLogID().getEventID()), ex.getMessage());
         } else {
             ex = new ServiceException(re,
-                    HttpEventLogId.UnexpectedException,
+                    HttpEventLogID.UnexpectedException,
                     ExceptionUtils.getRootCauseMessage(re));
             response = ResponseBuilder.build(
                     Response.Status.INTERNAL_SERVER_ERROR,
@@ -58,11 +58,11 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
                 ex = (ServiceException) re.getCause();
                 response = ResponseBuilder.build(
                         Response.Status.INTERNAL_SERVER_ERROR,
-                        String.valueOf(ex.getEventLogId().getEventId()),
+                        String.valueOf(ex.getEventLogID().getEventID()),
                         ex.getMessage());
             } else {
                 ex = new ServiceException(re,
-                        HttpEventLogId.UnexpectedException,
+                        HttpEventLogID.UnexpectedException,
                         ExceptionUtils.getRootCauseMessage(re));
                 response = ResponseBuilder.build(
                         Response.Status.fromStatusCode(((WebApplicationException) re).getResponse().getStatus()),
