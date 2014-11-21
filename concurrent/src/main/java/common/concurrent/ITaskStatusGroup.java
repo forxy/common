@@ -1,9 +1,5 @@
 package common.concurrent;
 
-/**
- * @author v-srabukha
- * @author v-dchabrovsky
- */
 public interface ITaskStatusGroup {
     /**
      * This method will return when all the operations that have been associated

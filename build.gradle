@@ -1,8 +1,9 @@
 subprojects {
     apply plugin: 'maven'
     apply plugin: 'java'
+    apply plugin: 'groovy'
 
-    group = "fraud"
+    group = 'fraud'
 
     jar { from sourceSets.main.allJava }
 
@@ -24,6 +25,6 @@ subprojects {
 
     dependencies {
         // ===================== TEST ========================================
-        testCompile "junit:junit:${rev_junit}"
+        testCompile "junit:junit:$rev_junit"
     }
 }

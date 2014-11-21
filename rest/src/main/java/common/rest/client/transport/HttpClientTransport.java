@@ -1,6 +1,9 @@
 package common.rest.client.transport;
 
+import common.exceptions.ClientException;
+import common.exceptions.HttpEventLogID;
 import common.rest.client.retry.IRetryPolicy;
+import common.rest.client.retry.RetryExecutor;
 import common.rest.client.transport.support.RepeatableEntityCreatingResponseInterceptor;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -32,9 +35,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import common.exceptions.ClientException;
-import common.exceptions.HttpEventLogID;
-import common.rest.client.retry.RetryExecutor;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -52,8 +52,8 @@ public class HttpClientTransport implements ITransport {
     private static final HttpHost PROXY = new HttpHost("127.0.0.1", 8888, "http");
     private final HttpClient httpClient;
 
-    private IRetryPolicy m_retryPolicy;
-    private boolean m_useRetries = false;
+    private IRetryPolicy retryPolicy;
+    private boolean useRetries = false;
 
     /**
      * Constructs the Apache HTTP Client transport implementation with the default transport settings (connection
@@ -251,12 +251,12 @@ public class HttpClientTransport implements ITransport {
         populateRequestHeaders(headers, request);
 
         final HttpContext context = new BasicHttpContext();
-        if (m_retryPolicy == null || !m_useRetries) {
+        if (retryPolicy == null || !useRetries) {
             return executeRequest(httpClient, context, responseHandler, request);
         } else {
             final RetryExecutor<Response<R, E>, ClientException> retryExecutor =
                     new SimpleRetryExecutor<R, E>(httpClient, context, responseHandler, request);
-            return retryExecutor.executeWithRetries(m_retryPolicy);
+            return retryExecutor.executeWithRetries(retryPolicy);
         }
     }
 
@@ -293,11 +293,11 @@ public class HttpClientTransport implements ITransport {
     }
 
     public void setRetryPolicy(final IRetryPolicy retryPolicy) {
-        m_retryPolicy = retryPolicy;
+        this.retryPolicy = retryPolicy;
     }
 
     public void setUseRetries(final boolean useRetries) {
-        m_useRetries = useRetries;
+        this.useRetries = useRetries;
     }
 
     private static <R, E> Response<R, E> executeRequest(final HttpClient httpClient,

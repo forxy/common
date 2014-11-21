@@ -6,11 +6,11 @@
 package common.exceptions.support;
 
 import common.exceptions.HttpEventLogID;
+import common.exceptions.ServiceException;
 import common.exceptions.ValidationException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import common.exceptions.ServiceException;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -38,7 +38,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
             response = ResponseBuilder.build(
                     Response.Status.fromStatusCode(ex.getEventLogID().getResponseID()),
                     ((ValidationException) re).getMessages());
-        } else if(re instanceof ServiceException) {
+        } else if (re instanceof ServiceException) {
             ex = (ServiceException) re;
             response = ResponseBuilder.build(
                     Response.Status.fromStatusCode(ex.getEventLogID().getResponseID()),

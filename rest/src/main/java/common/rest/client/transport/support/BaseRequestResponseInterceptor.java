@@ -1,11 +1,5 @@
 package common.rest.client.transport.support;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -18,15 +12,19 @@ import org.apache.http.RequestLine;
 import org.apache.http.StatusLine;
 import org.apache.http.protocol.HttpContext;
 
-public abstract class BaseRequestResponseInterceptor implements HttpRequestInterceptor, HttpResponseInterceptor
-{
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public abstract class BaseRequestResponseInterceptor implements HttpRequestInterceptor, HttpResponseInterceptor {
+
     @Override
     public void process(final HttpRequest request, final HttpContext context) throws HttpException,
-            IOException
-    {
+            IOException {
         byte[] payload = null;
-        if (request instanceof HttpEntityEnclosingRequest)
-        {
+        if (request instanceof HttpEntityEnclosingRequest) {
             final HttpEntityEnclosingRequest eer = (HttpEntityEnclosingRequest) request;
             payload = IOUtils.toByteArray(eer.getEntity().getContent());
         }
@@ -38,11 +36,9 @@ public abstract class BaseRequestResponseInterceptor implements HttpRequestInter
 
     @Override
     public void process(final HttpResponse response, final HttpContext context) throws HttpException,
-            IOException
-    {
+            IOException {
         byte[] payload = null;
-        if (response.getEntity() != null)
-        {
+        if (response.getEntity() != null) {
             payload = IOUtils.toByteArray(response.getEntity().getContent());
         }
 
@@ -51,17 +47,13 @@ public abstract class BaseRequestResponseInterceptor implements HttpRequestInter
                 getHeaderMap(response.getAllHeaders()), payload);
     }
 
-    private static Map<String, List<String>> getHeaderMap(final Header[] headers)
-    {
+    private static Map<String, List<String>> getHeaderMap(final Header[] headers) {
         Map<String, List<String>> headerMap = null;
-        if (headers != null && headers.length > 0)
-        {
+        if (headers != null && headers.length > 0) {
             headerMap = new LinkedHashMap<String, List<String>>();
-            for (final Header h : headers)
-            {
+            for (final Header h : headers) {
                 List<String> l = headerMap.get(h.getName());
-                if (l == null)
-                {
+                if (l == null) {
                     l = new ArrayList<String>();
                     headerMap.put(h.getName(), l);
                 }
@@ -72,12 +64,10 @@ public abstract class BaseRequestResponseInterceptor implements HttpRequestInter
     }
 
     protected void processRequest(final String url, final String method,
-            final Map<String, List<String>> headers, final byte[] payload)
-    {
+                                  final Map<String, List<String>> headers, final byte[] payload) {
     }
 
     protected void processResponse(final int statusCode, final String reasonPhrase,
-            final Map<String, List<String>> headers, final byte[] payload)
-    {
+                                   final Map<String, List<String>> headers, final byte[] payload) {
     }
 }

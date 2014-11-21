@@ -11,25 +11,25 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientConnectionMonitor implements Runnable {
     private static final Log LOGGER = LogFactory.getLog(HttpClientConnectionMonitor.class);
 
-    private final HttpClientConnectionManager m_connectionManager;
-    private final long m_idleTimeoutMillis;
+    private final HttpClientConnectionManager connectionManager;
+    private final long idleTimeoutMillis;
 
     private HttpClientConnectionMonitor(final HttpClientConnectionManager connectionManager,
                                         final long idleTimeoutMillis) {
-        m_connectionManager = connectionManager;
-        m_idleTimeoutMillis = idleTimeoutMillis;
+        this.connectionManager = connectionManager;
+        this.idleTimeoutMillis = idleTimeoutMillis;
     }
 
     @Override
     public void run() {
         try {
-            m_connectionManager.closeExpiredConnections();
+            connectionManager.closeExpiredConnections();
         } catch (final Exception e) {
             LOGGER.warn("Unable to close expired connections due to: " + e.getMessage(), e);
         }
-        if (m_idleTimeoutMillis > 0) {
+        if (idleTimeoutMillis > 0) {
             try {
-                m_connectionManager.closeIdleConnections(m_idleTimeoutMillis, TimeUnit.MILLISECONDS);
+                connectionManager.closeIdleConnections(idleTimeoutMillis, TimeUnit.MILLISECONDS);
             } catch (final Exception e) {
                 LOGGER.warn("Unable to close idle connections due to: " + e.getMessage(), e);
             }

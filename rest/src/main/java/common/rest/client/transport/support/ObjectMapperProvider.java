@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class ObjectMapperProvider {
+
     private static final Config DEFAULT_CONFIG = Config.newInstance();
 
     private static class StringTrimmingDeserializer extends JsonDeserializer<String> {

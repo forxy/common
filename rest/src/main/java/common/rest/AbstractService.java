@@ -8,9 +8,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.UUID;
 
+import static common.web.RequestHelper.Param;
 import static javax.ws.rs.core.Response.ResponseBuilder;
 import static javax.ws.rs.core.Response.Status;
-import static common.web.RequestHelper.Param;
 
 /**
  * Base class for rest service endpoint implementation

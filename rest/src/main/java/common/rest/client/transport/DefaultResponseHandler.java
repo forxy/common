@@ -5,11 +5,11 @@
 
 package common.rest.client.transport;
 
+import common.pojo.StatusEntity;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.CollectionType;
-import common.pojo.StatusEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,35 +17,38 @@ import java.util.Collection;
 import java.util.Map;
 
 public class DefaultResponseHandler<R> implements ITransport.IResponseHandler<R, StatusEntity> {
-    private final ObjectMapper m_mapper;
-    private final CollectionType m_collectionType;
-    private final Class<R> m_resourceType;
+
+    private final ObjectMapper mapper;
+
+    private final CollectionType collectionType;
+
+    private final Class<R> resourceType;
 
     public DefaultResponseHandler(final ObjectMapper mapper, final Class<R> resourceType) {
-        m_mapper = mapper;
-        m_collectionType = null;
-        m_resourceType = resourceType;
+        this.mapper = mapper;
+        collectionType = null;
+        this.resourceType = resourceType;
     }
 
     public <C extends Collection<R>> DefaultResponseHandler(final ObjectMapper mapper,
                                                             final CollectionType collectionType) {
-        m_mapper = mapper;
-        m_collectionType = collectionType;
-        m_resourceType = null;
+        this.mapper = mapper;
+        this.collectionType = collectionType;
+        resourceType = null;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public ITransport.Response<R, StatusEntity> handle(final int statusCode, final String statusReason,
-                                                      final Map<String, String> responseHeaders, final InputStream responseStream) throws IOException {
+                                                       final Map<String, String> responseHeaders, final InputStream responseStream) throws IOException {
         final byte[] responseBytes = responseStream != null ? IOUtils.toByteArray(responseStream) : null;
         String response = responseBytes != null ? new String(responseBytes, "UTF-8") : null;
         ITransport.Response<R, StatusEntity> result;
 
         if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
-            final R resource = (m_collectionType != null)
-                    ? (R) m_mapper.readValue(responseBytes, m_collectionType)
-                    : m_mapper.readValue(responseBytes, m_resourceType);
+            final R resource = (collectionType != null)
+                    ? (R) mapper.readValue(responseBytes, collectionType)
+                    : mapper.readValue(responseBytes, resourceType);
             result = new ITransport.Response<R, StatusEntity>(resource, null, responseHeaders);
             result.setResponse(response);
         } else if (statusCode == HttpStatus.SC_NO_CONTENT) {

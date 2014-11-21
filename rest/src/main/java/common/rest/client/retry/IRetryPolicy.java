@@ -1,7 +1,6 @@
 package common.rest.client.retry;
 
-public interface IRetryPolicy
-{
+public interface IRetryPolicy {
     IRetryContext open();
 
     boolean canRetry(IRetryContext context);

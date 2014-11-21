@@ -1,16 +1,16 @@
 package common.rest.client;
 
+import common.exceptions.ClientException;
+import common.exceptions.HttpEventLogID;
+import common.pojo.StatusEntity;
 import common.rest.client.transport.DefaultResponseHandler;
 import common.rest.client.transport.ITransport;
+import common.utils.ValidationUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.CollectionType;
 import org.codehaus.jackson.map.type.TypeFactory;
-import common.exceptions.ClientException;
-import common.exceptions.HttpEventLogID;
-import common.pojo.StatusEntity;
-import common.utils.ValidationUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

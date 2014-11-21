@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // --------------------- JSON ----------------------------------------
     compile "org.codehaus.jackson:jackson-jaxrs:${rev_jackson}"

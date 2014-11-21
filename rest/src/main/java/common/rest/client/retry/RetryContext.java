@@ -1,17 +1,14 @@
 package common.rest.client.retry;
 
-public class RetryContext implements IRetryContext
-{
-    public static interface IRetryContextFactory
-    {
+public class RetryContext implements IRetryContext {
+
+    public static interface IRetryContextFactory {
         IRetryContext newContext();
     }
 
-    public static final class DefaultRetryContextFactory implements IRetryContextFactory
-    {
+    public static final class DefaultRetryContextFactory implements IRetryContextFactory {
         @Override
-        public IRetryContext newContext()
-        {
+        public IRetryContext newContext() {
             return new RetryContext();
         }
     }
@@ -20,35 +17,29 @@ public class RetryContext implements IRetryContext
     private Exception lastException;
     private final long executionStartTime = System.currentTimeMillis();
 
-    private RetryContext()
-    {
+    private RetryContext() {
     }
 
     @Override
-    public int getRetryCount()
-    {
+    public int getRetryCount() {
         return retryCount;
     }
 
     @Override
-    public void registerException(final Exception e)
-    {
-        if (e != null)
-        {
+    public void registerException(final Exception e) {
+        if (e != null) {
             lastException = e;
             retryCount++;
         }
     }
 
     @Override
-    public Exception getLastException()
-    {
+    public Exception getLastException() {
         return lastException;
     }
 
     @Override
-    public long getExcutionTime()
-    {
+    public long getExcutionTime() {
         return System.currentTimeMillis() - executionStartTime;
     }
 }

@@ -1,14 +1,14 @@
 package common.web;
 
+import common.exceptions.ValidationException;
+import common.rest.client.transport.support.ObjectMapperProvider;
+import common.support.Configuration;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.IValidator;
 import net.sf.oval.exception.ValidationFailedException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.JsonMappingException;
-import common.exceptions.ValidationException;
-import common.rest.client.transport.support.ObjectMapperProvider;
-import common.support.Configuration;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;

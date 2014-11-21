@@ -22,10 +22,10 @@ import java.security.KeyStore;
  * @author v-dchabrovsky
  */
 public final class HttpClientSSLKeyStore {
-    private final KeyStore m_keyStore;
-    private final String m_keyStorePassword;
-    private final KeyStore m_trustStore;
-    private final boolean m_disableHostnameVerifier;
+    private final KeyStore keyStore;
+    private final String keyStorePassword;
+    private final KeyStore trustStore;
+    private final boolean disableHostnameVerifier;
 
     /**
      * Constructs certificates store for 1-way SSL communication, when only <tt>truststore</tt> is used
@@ -88,14 +88,14 @@ public final class HttpClientSSLKeyStore {
                                  final InputStream trustStoreStream, final String trustStorePassword,
                                  final boolean disableHostnameVerifier) throws Exception {
         if (keyStoreStream != null && !StringUtils.isEmpty(keyStorePassword)) {
-            m_keyStore = loadKeyStore(keyStoreStream, keyStorePassword);
-            m_keyStorePassword = keyStorePassword;
+            keyStore = loadKeyStore(keyStoreStream, keyStorePassword);
+            this.keyStorePassword = keyStorePassword;
         } else {
-            m_keyStore = null;
-            m_keyStorePassword = null;
+            keyStore = null;
+            this.keyStorePassword = null;
         }
-        m_trustStore = loadKeyStore(trustStoreStream, trustStorePassword);
-        m_disableHostnameVerifier = disableHostnameVerifier;
+        trustStore = loadKeyStore(trustStoreStream, trustStorePassword);
+        this.disableHostnameVerifier = disableHostnameVerifier;
     }
 
     private KeyStore loadKeyStore(final InputStream input, final String password) throws Exception {
@@ -114,19 +114,19 @@ public final class HttpClientSSLKeyStore {
     public LayeredConnectionSocketFactory getSocketFactory() {
 
         // @formatter:off
-        final X509HostnameVerifier hostnameVerifier = m_disableHostnameVerifier
+        final X509HostnameVerifier hostnameVerifier = disableHostnameVerifier
                 ? SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
                 : SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
         // @formatter:on
         try {
             SSLContextBuilder sslContextBuilder = SSLContexts.custom();
-            if (m_keyStore != null) {
+            if (keyStore != null) {
                 // this key store must contain the key/cert of the client
-                sslContextBuilder.loadKeyMaterial(m_keyStore, m_keyStorePassword.toCharArray());
+                sslContextBuilder.loadKeyMaterial(keyStore, keyStorePassword.toCharArray());
             }
-            if (m_trustStore != null) {
+            if (trustStore != null) {
                 // this key store must contain the certs needed and trusted to verify the servers cert
-                sslContextBuilder.loadTrustMaterial(m_trustStore);
+                sslContextBuilder.loadTrustMaterial(trustStore);
             }
 
             return new SSLConnectionSocketFactory(sslContextBuilder.build(), hostnameVerifier);
