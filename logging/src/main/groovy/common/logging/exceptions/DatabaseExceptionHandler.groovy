@@ -13,18 +13,17 @@ class DatabaseExceptionHandler implements IExceptionHandler {
 
     @Override
     void handleException(final Throwable t) {
-        String host = databaseHost != null ? databaseHost : 'N/A'
+        String host = databaseHost ?: 'N/A'
 
         //noinspection ThrowableResultOfMethodCallIgnored
         Throwable cause = ExceptionUtils.getRootCause(t)
         if (cause instanceof ConnectException) {
-            throw new ServiceException(LoggingCommonEventLogID.DatabaseIsNotAvailable, host,
-                    cause.getMessage())
+            throw new ServiceException(LoggingCommonEvent.DatabaseIsNotAvailable, host, cause.message)
         } else if (cause instanceof SocketTimeoutException) {
-            throw new ServiceException(LoggingCommonEventLogID.DatabaseTimeout, host, cause.getMessage())
+            throw new ServiceException(LoggingCommonEvent.DatabaseTimeout, host, cause.message)
         } else {
-            throw new ServiceException(LoggingCommonEventLogID.UnknownDataBaseException,
-                    cause != null ? cause.getMessage() : t != null ? t.getMessage() : 'N/A')
+            throw new ServiceException(LoggingCommonEvent.UnknownDataBaseException,
+                    cause?.message ?: t?.message ?: 'N/A')
         }
     }
 }

@@ -5,7 +5,7 @@
 
 package common.exceptions.support;
 
-import common.exceptions.HttpEventLogID;
+import common.exceptions.HttpEvent;
 import common.exceptions.ServiceException;
 import common.exceptions.ValidationException;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -45,7 +45,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
                     String.valueOf(ex.getEventLogID().getEventID()), ex.getMessage());
         } else {
             ex = new ServiceException(re,
-                    HttpEventLogID.UnexpectedException,
+                    HttpEvent.UnexpectedException,
                     ExceptionUtils.getRootCauseMessage(re));
             response = ResponseBuilder.build(
                     Response.Status.INTERNAL_SERVER_ERROR,
@@ -62,7 +62,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
                         ex.getMessage());
             } else {
                 ex = new ServiceException(re,
-                        HttpEventLogID.UnexpectedException,
+                        HttpEvent.UnexpectedException,
                         ExceptionUtils.getRootCauseMessage(re));
                 response = ResponseBuilder.build(
                         Response.Status.fromStatusCode(((WebApplicationException) re).getResponse().getStatus()),

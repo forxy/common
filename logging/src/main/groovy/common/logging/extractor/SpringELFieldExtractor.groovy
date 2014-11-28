@@ -41,7 +41,7 @@ class SpringELFieldExtractor implements IHttpFieldExtractor, IFieldExtractor {
 
     static final ExpressionParser PARSER = new SpelExpressionParser()
 
-    Map<String, Expression> extractRules
+    private Map<String, Expression> extractRules
     BeanResolver beanResolver
 
     @Override
@@ -72,12 +72,10 @@ class SpringELFieldExtractor implements IHttpFieldExtractor, IFieldExtractor {
             context.setVariable('response', response)
             context.setVariable('requestHeaders', requestHeaders)
             context.setVariable('responseHeaders', responseHeaders)
-            for (final Map.Entry<String, Expression> kv : extractRules.entrySet()) {
-                final String field = kv.getKey()
-                final Expression expression = kv.getValue()
+            extractRules.each { field, expression ->
                 try {
                     final Object value = rollupResult(expression.getValue(context))
-                    if (value != null) {
+                    if (value) {
                         result.put(field, value)
                     }
                 } catch (SpelEvaluationException see) {
@@ -110,11 +108,9 @@ class SpringELFieldExtractor implements IHttpFieldExtractor, IFieldExtractor {
      * @param extractRules key - new field name, value - el rule
      */
     void setExtractRules(final Map<String, String> extractRules) {
-        this.extractRules = new LinkedHashMap<String, Expression>()
-        if (extractRules != null) {
-            for (final Map.Entry<String, String> kv : extractRules.entrySet()) {
-                this.extractRules.put(kv.getKey(), PARSER.parseExpression(kv.getValue()))
-            }
+        this.extractRules = [:]
+        extractRules?.each { key, value ->
+            this.extractRules[key] = PARSER.parseExpression(value)
         }
     }
 }

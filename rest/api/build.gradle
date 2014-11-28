@@ -1,6 +1,7 @@
-apply plugin: 'java'
-
 dependencies {
+    // --------------------- GROOVY --------------------------------------
+    compile "org.codehaus.groovy:groovy-all:$rev_groovy"
+
     // --------------------- JSON ----------------------------------------
     compile "org.codehaus.jackson:jackson-jaxrs:${rev_jackson}"
     compile "org.codehaus.jackson:jackson-core-asl:${rev_jackson}"

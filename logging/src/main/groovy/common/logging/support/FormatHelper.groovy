@@ -64,12 +64,12 @@ class FormatHelper {
                 final Source xmlInput = new StreamSource(new StringReader(input))
                 final StreamResult xmlOutput = new StreamResult(new StringWriter())
                 final Transformer transformer = TRANSFORMER_FACTORY.newTransformer()
-                transformer.setErrorListener(new MuteErrorListener())
+                transformer.errorListener = new MuteErrorListener()
                 transformer.setOutputProperty(OutputKeys.INDENT, 'yes')
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, 'yes')
                 transformer.setOutputProperty('{http://xml.apache.org/xslt}indent-amount', '2')
                 transformer.transform(xmlInput, xmlOutput)
-                input = xmlOutput.getWriter().toString()
+                input = xmlOutput.writer as String
             } catch (Exception e) {
                 LOGGER.debug('Error formatting with prettyFormat', e)
             }
@@ -90,7 +90,7 @@ class FormatHelper {
             final StringBuilder result = new StringBuilder(10000)
             while (input.length() > chunkSize) {
                 int breakIndex = -1
-                final String breakLookup = input.substring(0, chunkSize)
+                final String breakLookup = input[0..chunkSize]
                 for (final char breakChar : BREAK_AFTER_CHARS) {
                     breakIndex = breakLookup.lastIndexOf(breakChar)
                     if (breakIndex > -1) {

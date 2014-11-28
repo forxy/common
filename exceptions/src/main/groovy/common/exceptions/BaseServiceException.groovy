@@ -28,11 +28,7 @@ abstract class BaseServiceException extends RuntimeException {
         this.eventLogID = eventLogID
     }
 
-    EventLogBase getEventLogID() {
-        return eventLogID
-    }
-
     int getStatusCode() {
-        return eventLogID.getEventID()
+        return eventLogID.eventID
     }
 }

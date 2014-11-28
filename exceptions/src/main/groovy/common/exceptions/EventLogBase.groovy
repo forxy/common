@@ -1,18 +1,18 @@
 package common.exceptions
 
-interface EventLogBase {
+trait EventLogBase {
 
-    int getEventID()
+    EventLogBase.Level logLevel
+    String formatString
+    int eventID
+    int responseID
+    EventType eventType
 
-    int getResponseID()
+    public String getMessage(final Object... arguments) {
+        return arguments != null && arguments.length > 0 ? String.format(formatString, arguments) : formatString
+    }
 
-    Level getLogLevel()
-
-    EventType getEventType()
-
-    String getMessage(final Object... arguments)
-
-    enum Level {
+    static enum Level {
         ERROR,
         WARN,
         INFO,

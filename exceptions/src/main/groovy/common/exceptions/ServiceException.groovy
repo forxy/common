@@ -32,18 +32,18 @@ class ServiceException extends BaseServiceException {
     }
 
     void log(final Logger logger) {
-        if (isEnabledFor(logger, getEventLogID().getLogLevel())) {
-            ExceptionUtils.logEvent(logger, getEventLogID(), getMessage(), this)
+        if (isEnabledFor(logger, eventLogID.logLevel)) {
+            ExceptionUtils.logEvent(logger, eventLogID, message, this)
         }
     }
 
     void log(final Logger logger, final String additionalInfo) {
-        if (isEnabledFor(logger, getEventLogID().getLogLevel())) {
-            final StringBuilder message = new StringBuilder(getMessage())
+        if (isEnabledFor(logger, eventLogID.logLevel)) {
+            final StringBuilder message = new StringBuilder(message)
             if (null != additionalInfo) {
                 message.append(additionalInfo)
             }
-            ExceptionUtils.logEvent(logger, getEventLogID(), message.toString(), this)
+            ExceptionUtils.logEvent(logger, eventLogID, message.toString(), this)
         }
     }
 
@@ -51,15 +51,15 @@ class ServiceException extends BaseServiceException {
         if (logger != null) {
             switch (level) {
                 case EventLogBase.Level.ERROR:
-                    return logger.isErrorEnabled()
+                    return logger.errorEnabled
                 case EventLogBase.Level.WARN:
-                    return logger.isWarnEnabled()
+                    return logger.warnEnabled
                 case EventLogBase.Level.INFO:
-                    return logger.isInfoEnabled()
+                    return logger.infoEnabled
                 case EventLogBase.Level.DEBUG:
-                    return logger.isDebugEnabled()
+                    return logger.debugEnabled
                 case EventLogBase.Level.TRACE:
-                    return logger.isTraceEnabled()
+                    return logger.traceEnabled
                 default:
                     return false
             }

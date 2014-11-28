@@ -13,17 +13,17 @@ class ServiceExceptionHandler implements IExceptionHandler {
 
     @Override
     void handleException(Throwable t) {
-        String host = remoteServiceHost != null ? remoteServiceHost : 'N/A'
+        String host = remoteServiceHost ?: 'N/A'
 
         //noinspection ThrowableResultOfMethodCallIgnored
         Throwable cause = ExceptionUtils.getRootCause(t)
         if (cause instanceof ConnectException) {
-            throw new ServiceException(LoggingCommonEventLogID.ServiceIsNotAvailable, host, cause.getMessage())
+            throw new ServiceException(LoggingCommonEvent.ServiceIsNotAvailable, host, cause.message)
         } else if (cause instanceof SocketTimeoutException) {
-            throw new ServiceException(LoggingCommonEventLogID.ServiceTimeout, host, cause.getMessage())
+            throw new ServiceException(LoggingCommonEvent.ServiceTimeout, host, cause.message)
         } else {
-            throw new ServiceException(LoggingCommonEventLogID.UnknownServiceException,
-                    cause != null ? cause.getMessage() : t != null ? t.getMessage() : 'N/A')
+            throw new ServiceException(LoggingCommonEvent.UnknownServiceException,
+                    cause?.message ?: t?.message ?: 'N/A')
         }
     }
 }

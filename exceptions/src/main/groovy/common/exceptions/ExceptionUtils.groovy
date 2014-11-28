@@ -21,7 +21,7 @@ final class ExceptionUtils {
             return clazz.cast(throwable)
         }
 
-        final Throwable cause = throwable.getCause()
+        final Throwable cause = throwable.cause
         if (cause == throwable) {
             return null
         }
@@ -53,9 +53,9 @@ final class ExceptionUtils {
     static String getContext() {
         String prefix
         try {
-            prefix = MDC.getCopyOfContextMap().toString()
+            prefix = MDC.copyOfContextMap as String
         } catch (final Exception e) {
-            prefix = "Failed to retrieve NDC context: " + e.getMessage()
+            prefix = "Failed to retrieve NDC context: $e.message"
         }
         return prefix
     }

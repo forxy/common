@@ -15,36 +15,36 @@ public class ValidationException extends ServiceException {
     private final List<String> messages;
 
     public ValidationException(List<String> messages) {
-        super(HttpEventLogID.ValidationException);
+        super(HttpEvent.ValidationException);
         this.messages = messages;
     }
 
     public ValidationException(String message) {
-        super(message, HttpEventLogID.ValidationException);
+        super(message, HttpEvent.ValidationException);
         messages = new ArrayList<>(1);
         messages.add(message);
     }
 
     public ValidationException(Throwable cause, String message) {
-        super(cause, message, HttpEventLogID.ValidationException);
+        super(cause, message, HttpEvent.ValidationException);
         messages = new ArrayList<>(1);
         messages.add(super.getMessage());
     }
 
     public ValidationException(Throwable cause, Object... args) {
-        super(cause, HttpEventLogID.ValidationException, args);
+        super(cause, HttpEvent.ValidationException, args);
         messages = new ArrayList<>(1);
         messages.add(super.getMessage());
     }
 
     public ValidationException(Object... args) {
-        super(HttpEventLogID.ValidationException, args);
+        super(HttpEvent.ValidationException, args);
         messages = new ArrayList<>(1);
         messages.add(super.getMessage());
     }
 
     public ValidationException(Throwable cause) {
-        super(cause, HttpEventLogID.ValidationException);
+        super(cause, HttpEvent.ValidationException);
         messages = new ArrayList<>(1);
         messages.add(super.getMessage());
     }

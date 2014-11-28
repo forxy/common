@@ -50,9 +50,7 @@ abstract class AbstractPerformanceLogger implements InitializingBean {
     }
 
     static void writeFrame(final ILogWriter writer) {
-        if (writer != null) {
-            writer.log(Context.peek())
-        }
+        writer?.log(Context.peek())
     }
 
     @Override

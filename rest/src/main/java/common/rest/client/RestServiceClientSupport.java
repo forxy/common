@@ -1,7 +1,7 @@
 package common.rest.client;
 
 import common.exceptions.ClientException;
-import common.exceptions.HttpEventLogID;
+import common.exceptions.HttpEvent;
 import common.pojo.StatusEntity;
 import common.rest.client.transport.DefaultResponseHandler;
 import common.rest.client.transport.ITransport;
@@ -55,7 +55,7 @@ public abstract class RestServiceClientSupport {
         try {
             return mapper.writeValueAsString(obj);
         } catch (final IOException e) {
-            throw new ClientException(null, e, HttpEventLogID.UnexpectedException, e.getMessage());
+            throw new ClientException(null, e, HttpEvent.UnexpectedException, e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class RestServiceClientSupport {
         try {
             return mapper.readValue(new InputStreamReader(json), clazz);
         } catch (final IOException e) {
-            throw new ClientException(null, e, HttpEventLogID.UnexpectedException, e.getMessage());
+            throw new ClientException(null, e, HttpEvent.UnexpectedException, e.getMessage());
         }
     }
 
@@ -91,19 +91,19 @@ public abstract class RestServiceClientSupport {
     protected <T> T checkForError(final ITransport.Response<T, StatusEntity> response) throws ClientException {
         final StatusEntity error = response.getError();
         if (error != null) {
-            if (String.valueOf(HttpStatus.SC_FORBIDDEN).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogID.AccessDenied);
-            } else if (String.valueOf(HttpStatus.SC_UNAUTHORIZED).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogID.Unauthorized);
-            } else if (String.valueOf(HttpStatus.SC_NOT_FOUND).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogID.ResourceNotFound);
-            } else if (String.valueOf(HttpStatus.SC_BAD_REQUEST).equals(error.getCode())) {
-                throw new ClientException(error, HttpEventLogID.InvalidClientInput);
+            if (HttpStatus.SC_FORBIDDEN == response.getHttpStatusCode()) {
+                throw new ClientException(error, HttpEvent.AccessDenied);
+            } else if (HttpStatus.SC_UNAUTHORIZED == response.getHttpStatusCode()) {
+                throw new ClientException(error, HttpEvent.Unauthorized);
+            } else if (HttpStatus.SC_NOT_FOUND == response.getHttpStatusCode()) {
+                throw new ClientException(error, HttpEvent.ResourceNotFound);
+            } else if (HttpStatus.SC_BAD_REQUEST == response.getHttpStatusCode()) {
+                throw new ClientException(error, HttpEvent.InvalidClientInput);
             }
             throw processErrorResponse(error);
         } else {
             if (response.getResource() == null && response.getHttpStatusCode() != HttpStatus.SC_NO_CONTENT) {
-                throw new ClientException(null, HttpEventLogID.UnexpectedException, "Response object is not " +
+                throw new ClientException(null, HttpEvent.UnexpectedException, "Response object is not " +
                         "initialized when instance with payload data is expected.");
             }
             return response.getResource();
@@ -117,7 +117,7 @@ public abstract class RestServiceClientSupport {
      * @return Client exception that is to be thrown
      */
     protected ClientException processErrorResponse(final StatusEntity error) {
-        return new ClientException(error, HttpEventLogID.UnexpectedException,
+        return new ClientException(error, HttpEvent.UnexpectedException,
                 error != null ? "Error code: " + error.getCode() : "N/A");
     }
 
@@ -132,11 +132,11 @@ public abstract class RestServiceClientSupport {
     protected void validateGUID(final String name, final String value, final boolean allowEmpty)
             throws ClientException {
         if (StringUtils.isBlank(value) && !allowEmpty) {
-            throw new ClientException(null, HttpEventLogID.InvalidClientInput,
+            throw new ClientException(null, HttpEvent.InvalidClientInput,
                     "Parameter '" + name + "' should not be empty");
         }
         if (!StringUtils.isBlank(value) && !ValidationUtils.isValidGUID(value)) {
-            throw new ClientException(null, HttpEventLogID.InvalidClientInput,
+            throw new ClientException(null, HttpEvent.InvalidClientInput,
                     "Parameter '" + name + "' is not in GUID format");
         }
     }

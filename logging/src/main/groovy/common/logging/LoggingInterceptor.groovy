@@ -27,14 +27,15 @@ class LoggingInterceptor extends AbstractPerformanceLogger implements MethodInte
                     Context.addGlobal(Fields.ActivityGUID, UUID.randomUUID().toString())
                 }
                 Context.addFrame(Fields.ActivityName,
-                        activityName != null ? activityName : MetadataHelper.getRealClassName(invocation.this))
+                        activityName ?: MetadataHelper.getRealClassName(invocation.this))
                 Context.addFrame(Fields.ActivityStep, Fields.ActivitySteps.rq)
                 Context.addFrame(Fields.TimestampStart, new Date(timestampStart))
                 Context.addFrame(Fields.Timestamp, new Date(timestampStart))
-                if (requestWriter != null) {
-                    requestWriter.log(Context.peek())
-                }
+
+                requestWriter?.log(Context.peek())
+
                 return invocation.proceed()
+
             } catch (ServiceException se) {
                 processException(se)
                 throw se

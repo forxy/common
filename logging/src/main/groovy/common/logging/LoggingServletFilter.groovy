@@ -1,7 +1,6 @@
 package common.logging
 
 import common.exceptions.ServiceException
-import common.logging.extractor.IHttpFieldExtractor
 import common.logging.support.Fields
 import common.logging.wrapper.HttpRequestWrapper
 import common.logging.wrapper.HttpResponseWrapper
@@ -117,13 +116,11 @@ class LoggingServletFilter extends AbstractPerformanceLogger implements Filter {
         if (isPayloadLoggingEnabled || responseFieldExtractors != null) {
             final byte[] payload = rs.responseBody
             //extract response custom fields from payload
-            if (responseFieldExtractors != null) {
-                for (final IHttpFieldExtractor fe : responseFieldExtractors) {
-                    final Map<String, Object> frame = Context.peek().frame
-                    final Map<String, Object> extracted =
-                            fe.extract(payload, frame, rq, rs, getHeaderMap(rq), rs.responseHeaders)
-                    frame.putAll(extracted)
-                }
+            responseFieldExtractors?.each {
+                final Map<String, Object> frame = Context.peek().frame
+                final Map<String, Object> extracted =
+                        it.extract(payload, frame, rq, rs, getHeaderMap(rq), rs.responseHeaders)
+                frame.putAll(extracted)
             }
             //capture response payload
             if (isPayloadLoggingEnabled) {
@@ -135,28 +132,20 @@ class LoggingServletFilter extends AbstractPerformanceLogger implements Filter {
     }
 
     static Map<String, List<String>> getHeaderMap(final HttpServletRequest rq) {
-        Map<String, List<String>> result = null
-        final Enumeration names = rq.headerNames
-        if (names != null && names.hasMoreElements()) {
-            result = new LinkedHashMap<>()
-            while (names.hasMoreElements()) {
-                final String name = (String) names.nextElement()
-
-                @SuppressWarnings('unchecked')
-                final Enumeration<String> values = rq.getHeaders(name)
-
-                if (values != null) {
-                    result[name] = Collections.list(values)
-                }
+        Map<String, List<String>> result = rq.headerNames ? [:] : null
+        rq.headerNames?.each { String name ->
+            final Enumeration<String> values = rq.getHeaders(name)
+            if (values) {
+                result[name] = values.toList()
             }
         }
         return result
     }
 
     static String getRequestUrl(final HttpServletRequest rq) {
-        final StringBuilder url = new StringBuilder(256).append(rq.getRequestURL())
+        final StringBuilder url = new StringBuilder(256).append(rq.requestURL)
         if (rq.getQueryString() != null) {
-            url.append('?').append(rq.getQueryString())
+            url.append('?').append(rq.queryString)
         }
         return url.toString()
     }

@@ -3,33 +3,33 @@ package common.exceptions;
 /**
  * Event log id enumeration that describes common rest webservice specific events
  */
-public enum HttpEventLogID implements EventLogBase {
+public enum HttpEvent implements EventLogBase {
 
     // -------------------------------------------------------------------
     // Common events
     // -------------------------------------------------------------------
 
-    InvalidClientInput(HttpEventLogID.BASE_EVENT_LOG_ID + 400, 400,
+    InvalidClientInput(HttpEvent.BASE_EVENT_LOG_ID + 400, 400,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    ValidationException(HttpEventLogID.BASE_EVENT_LOG_ID + 400, 400,
+    ValidationException(HttpEvent.BASE_EVENT_LOG_ID + 400, 400,
             "Validation rule violation. Details: %1$s",
             EventType.InvalidInput),
 
-    Unauthorized(HttpEventLogID.BASE_EVENT_LOG_ID + 401, 401,
+    Unauthorized(HttpEvent.BASE_EVENT_LOG_ID + 401, 401,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    AccessDenied(HttpEventLogID.BASE_EVENT_LOG_ID + 404, 403,
+    AccessDenied(HttpEvent.BASE_EVENT_LOG_ID + 404, 403,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    ResourceNotFound(HttpEventLogID.BASE_EVENT_LOG_ID + 404, 404,
+    ResourceNotFound(HttpEvent.BASE_EVENT_LOG_ID + 404, 404,
             "Operation is not allowed",
             EventType.InvalidInput),
 
-    UnexpectedException(HttpEventLogID.BASE_EVENT_LOG_ID + 500, 500,
+    UnexpectedException(HttpEvent.BASE_EVENT_LOG_ID + 500, 500,
             "Unexpected unhandled exception. Details: %1$s",
             EventType.InternalError),
 
@@ -37,15 +37,15 @@ public enum HttpEventLogID implements EventLogBase {
     // Network events
     // -------------------------------------------------------------------
 
-    SSLConnectivityException(HttpEventLogID.BASE_EVENT_LOG_ID, 403,
+    SSLConnectivityException(HttpEvent.BASE_EVENT_LOG_ID, 403,
             "Error during SSL communication. Details: %1$s",
             EventType.InvalidInput),
 
-    SocketTimeoutException(HttpEventLogID.BASE_EVENT_LOG_ID + 501, 501,
+    SocketTimeoutException(HttpEvent.BASE_EVENT_LOG_ID + 501, 501,
             "Timeout. Details: %1$s",
             EventType.InternalError),
 
-    ServiceUnavailableException(HttpEventLogID.BASE_EVENT_LOG_ID + 503, 503,
+    ServiceUnavailableException(HttpEvent.BASE_EVENT_LOG_ID + 503, 503,
             "Service is not available. Details: %1$s",
             EventType.InternalError);
 
@@ -58,12 +58,12 @@ public enum HttpEventLogID implements EventLogBase {
     private int responseID;
     private EventType eventType;
 
-    private HttpEventLogID(final int eventID, final int responseID, final String formatString, final EventType eventType) {
+    private HttpEvent(final int eventID, final int responseID, final String formatString, final EventType eventType) {
         this(eventID, responseID, Level.ERROR, formatString, eventType);
     }
 
-    private HttpEventLogID(final int eventID, final int responseID, final Level logLevel, final String formatString,
-                           final EventType eventType) {
+    private HttpEvent(final int eventID, final int responseID, final Level logLevel, final String formatString,
+                      final EventType eventType) {
         this.eventID = eventID;
         this.responseID = responseID;
         this.logLevel = logLevel;
@@ -72,22 +72,52 @@ public enum HttpEventLogID implements EventLogBase {
     }
 
     @Override
+    public Level getLogLevel() {
+        return logLevel;
+    }
+
+    public void setLogLevel(final Level logLevel) {
+        this.logLevel = logLevel;
+    }
+
+    @Override
+    public String getFormatString() {
+        return formatString;
+    }
+
+    @Override
+    public void setFormatString(final String formatString) {
+        this.formatString = formatString;
+    }
+
+    @Override
     public int getEventID() {
         return eventID;
     }
 
+    @Override
+    public void setEventID(final int eventID) {
+        this.eventID = eventID;
+    }
+
+    @Override
     public int getResponseID() {
         return responseID;
     }
 
     @Override
-    public Level getLogLevel() {
-        return logLevel;
+    public void setResponseID(final int responseID) {
+        this.responseID = responseID;
     }
 
     @Override
     public EventType getEventType() {
         return eventType;
+    }
+
+    @Override
+    public void setEventType(final EventType eventType) {
+        this.eventType = eventType;
     }
 
     public String getMessage(final Object... arguments) {
