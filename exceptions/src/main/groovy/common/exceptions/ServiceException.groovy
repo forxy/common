@@ -11,24 +11,16 @@ class ServiceException extends BaseServiceException {
         super(eventLogID)
     }
 
-    ServiceException(final String message, final EventLogBase eventLogID) {
-        super(message, eventLogID)
-    }
-
-    ServiceException(final Throwable cause, final String message, final EventLogBase eventLogID) {
-        super(cause, message, eventLogID)
-    }
-
-    ServiceException(final Throwable cause, final EventLogBase eventLogID, final Object... args) {
-        super(cause, eventLogID.getMessage(args), eventLogID)
-    }
-
-    ServiceException(final EventLogBase eventLogId, final Object... args) {
-        super(eventLogId.getMessage(args), eventLogId)
+    ServiceException(final EventLogBase eventLogID, final Object... args) {
+        super(eventLogID, args)
     }
 
     ServiceException(final Throwable cause, final EventLogBase eventLogID) {
         super(cause, eventLogID)
+    }
+
+    ServiceException(final Throwable cause, final EventLogBase eventLogID, final Object... args) {
+        super(cause, eventLogID, args)
     }
 
     void log(final Logger logger) {

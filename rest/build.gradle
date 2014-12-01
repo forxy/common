@@ -1,11 +1,10 @@
-apply plugin: 'java'
-
 dependencies {
     // --------------------- PROJECTS ------------------------------------
-    compile project(":common.rest:common.rest.api")
     compile project(":common.utils")
-    compile project(":common.status")
     compile project(":common.exceptions")
+
+    compile project(":common.status")
+    compile project(":common.rest:common.rest.api")
 
     // --------------------- HTTP ----------------------------------------
     compile "org.apache.httpcomponents:httpcore:${rev_httpcore}"
