@@ -42,14 +42,14 @@ enum HttpEvent implements EventLogBase {
 
     private static final int BASE_EVENT_LOG_ID = 1000
 
-    private HttpEvent(int eventID, int responseID, EventLogBase.EventType eventType, String formatString) {
-        this(eventID, responseID, EventLogBase.Level.ERROR, eventType, formatString)
+    private HttpEvent(int eventID, int httpCode, EventLogBase.EventType eventType, String formatString) {
+        this(eventID, httpCode, EventLogBase.Level.ERROR, eventType, formatString)
     }
 
-    private HttpEvent(int eventID, int responseID, EventLogBase.Level logLevel, EventLogBase.EventType eventType,
+    private HttpEvent(int eventID, int httpCode, EventLogBase.Level logLevel, EventLogBase.EventType eventType,
                       String formatString) {
         this.eventID = BASE_EVENT_LOG_ID + eventID
-        this.responseID = responseID
+        this.httpCode = httpCode
         this.logLevel = logLevel
         this.formatString = formatString
         this.eventType = eventType

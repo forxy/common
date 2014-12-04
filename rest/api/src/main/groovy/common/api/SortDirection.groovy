@@ -1,4 +1,4 @@
-package common.pojo
+package common.api
 
 enum SortDirection {
     ASC,

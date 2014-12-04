@@ -1,4 +1,4 @@
-package common.pojo
+package common.api
 
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.JsonSerializer

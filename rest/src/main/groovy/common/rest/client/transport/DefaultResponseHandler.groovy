@@ -5,7 +5,7 @@
 
 package common.rest.client.transport
 
-import common.pojo.StatusEntity
+import common.api.StatusEntity
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
 import org.codehaus.jackson.map.ObjectMapper
@@ -48,7 +48,7 @@ class DefaultResponseHandler<R> implements ITransport.IResponseHandler<R, Status
         } else if (statusCode == HttpStatus.SC_NO_CONTENT) {
             result = new ITransport.Response<R, StatusEntity>(null, null, responseHeaders)
         } else {
-            final StatusEntity error = new StatusEntity(statusCode as String, response)
+            final StatusEntity error = new StatusEntity(statusCode, response)
             result = new ITransport.Response<R, StatusEntity>(null, error, null)
         }
         result.httpStatusCode = statusCode

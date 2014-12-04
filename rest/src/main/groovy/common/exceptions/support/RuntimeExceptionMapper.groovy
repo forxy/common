@@ -39,14 +39,14 @@ class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
         if (re instanceof ValidationException) {
             ex = (ValidationException) re
             response = ResponseBuilder.build(
-                    fromStatusCode(ex.eventLogID.responseID),
+                    fromStatusCode(ex.eventLogID.httpCode),
                     ((ValidationException) re).messages
             )
         } else if (re instanceof ServiceException) {
             ex = (ServiceException) re
             response = ResponseBuilder.build(
-                    fromStatusCode(ex.eventLogID.responseID),
-                    ex.eventLogID.eventID as String,
+                    fromStatusCode(ex.eventLogID.httpCode),
+                    ex.eventLogID.eventID,
                     ex.message
             )
         } else {
@@ -56,7 +56,7 @@ class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
             )
             response = ResponseBuilder.build(
                     INTERNAL_SERVER_ERROR,
-                    ex.statusCode as String,
+                    ex.statusCode,
                     ExceptionUtils.getFullStackTrace(re)
             )
         }
@@ -66,17 +66,14 @@ class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
                 ex = (ServiceException) re.cause
                 response = ResponseBuilder.build(
                         INTERNAL_SERVER_ERROR,
-                        ex.eventLogID.eventID as String,
+                        ex.eventLogID.eventID,
                         ex.message
                 )
             } else {
-                ex = new ServiceException(re,
-                        UnexpectedException,
-                        ExceptionUtils.getRootCauseMessage(re)
-                )
+                ex = new ServiceException(re, UnexpectedException, ExceptionUtils.getRootCauseMessage(re))
                 response = ResponseBuilder.build(
                         fromStatusCode(((WebApplicationException) re).response.status),
-                        ((WebApplicationException) re).response.status as String,
+                        ((WebApplicationException) re).response.status,
                         ExceptionUtils.getFullStackTrace(re)
                 )
             }

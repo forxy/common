@@ -1,4 +1,4 @@
-package common.pojo
+package common.api
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties
 

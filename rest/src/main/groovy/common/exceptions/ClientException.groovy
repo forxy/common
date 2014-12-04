@@ -1,7 +1,7 @@
 package common.exceptions
 
 
-import common.pojo.StatusEntity
+import common.api.StatusEntity
 
 /**
  * Base Client exception

@@ -2,7 +2,7 @@ package common.rest.client
 
 import common.exceptions.ClientException
 import common.exceptions.HttpEvent
-import common.pojo.StatusEntity
+import common.api.StatusEntity
 import common.rest.client.transport.DefaultResponseHandler
 import common.rest.client.transport.ITransport
 import common.utils.ValidationUtils

@@ -11,7 +11,7 @@ import javax.ws.rs.core.*
  * System status controller
  * You can call it to get service health status
  */
-@Path('/common/status/')
+@Path('/status')
 @Produces(MediaType.APPLICATION_JSON)
 class SystemStatusController extends AbstractService {
 

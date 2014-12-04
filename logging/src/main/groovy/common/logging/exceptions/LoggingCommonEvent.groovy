@@ -41,7 +41,7 @@ enum LoggingCommonEvent implements EventLogBase {
     private LoggingCommonEvent(final int eventID, final int responseID, final EventLogBase.Level logLevel,
                                final EventLogBase.EventType eventType, final String formatString) {
         this.eventID = BASE_EVENT_LOG_ID + eventID
-        this.responseID = responseID
+        this.httpCode = responseID
         this.logLevel = logLevel
         this.formatString = formatString
         this.eventType = eventType

@@ -1,7 +1,11 @@
-package common.status.pojo
+package common.status.api
+
+import groovy.transform.TupleConstructor
+
 /**
  * Includes the information about System health status
  */
+@TupleConstructor
 class SystemStatus implements Serializable {
 
     String name
@@ -13,18 +17,6 @@ class SystemStatus implements Serializable {
     StatusType status
 
     List<ComponentStatus> componentStatuses
-
-    SystemStatus() {
-    }
-
-    SystemStatus(final String name, final String location, final String version, final StatusType status,
-                 final List<ComponentStatus> componentStatuses) {
-        this.name = name
-        this.location = location
-        this.version = version
-        this.status = status
-        this.componentStatuses = componentStatuses
-    }
 
     void addComponentStatuses(final ComponentStatus componentStatus) {
         if (componentStatuses == null) {

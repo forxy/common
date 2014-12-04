@@ -1,4 +1,4 @@
-package common.status.pojo
+package common.status.api
 
 /**
  * Identifies possible status values
