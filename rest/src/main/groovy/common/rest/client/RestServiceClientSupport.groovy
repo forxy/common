@@ -6,10 +6,16 @@ import common.pojo.StatusEntity
 import common.rest.client.transport.DefaultResponseHandler
 import common.rest.client.transport.ITransport
 import common.utils.ValidationUtils
+import common.web.RequestHelper
 import org.apache.http.HttpStatus
 import org.codehaus.jackson.map.ObjectMapper
 import org.codehaus.jackson.map.type.CollectionType
 import org.codehaus.jackson.map.type.TypeFactory
+
+import static common.web.RequestHelper.Param.CLIENT_ID
+import static common.web.RequestHelper.Param.TRANSACTION_GUID
+import static javax.ws.rs.core.HttpHeaders.ACCEPT
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE
 
 /**
  * An abstract class serving as the base for REST Service Client implementations, providing
@@ -19,8 +25,9 @@ abstract class RestServiceClientSupport {
     protected static final String JSON_CONTENT_TYPE = 'application/json'
 
     ObjectMapper mapper
-
     ITransport transport
+    String endpoint
+    String clientID
 
     protected <R> ITransport.IResponseHandler<R, StatusEntity> createResponseHandler(
             final Class<R> resourceType) {
@@ -93,8 +100,8 @@ abstract class RestServiceClientSupport {
             throw processErrorResponse(error)
         } else {
             if (!response.resource && response.httpStatusCode != HttpStatus.SC_NO_CONTENT) {
-                throw new ClientException(null, HttpEvent.UnexpectedException, 'Response object is not ' +
-                        'initialized when instance with payload data is expected.')
+                throw new ClientException(null, HttpEvent.UnexpectedException,
+                        'Response object is not initialized when instance with payload data is expected.')
             }
             return response.resource
         }
@@ -110,6 +117,17 @@ abstract class RestServiceClientSupport {
         return new ClientException(error, HttpEvent.UnexpectedException, error ? "Error code: $error.code" : 'N/A')
     }
 
+    protected Map<String, String> buildHeaders(final String transactionGUID) throws ClientException {
+        validateGUID(RequestHelper.Param.AUTHORIZATION.httpHeaderName, transactionGUID, true)
+
+        return [
+                (ACCEPT)                         : JSON_CONTENT_TYPE,
+                (CONTENT_TYPE)                   : JSON_CONTENT_TYPE,
+                (TRANSACTION_GUID.httpHeaderName): transactionGUID ?: UUID.randomUUID() as String,
+                (CLIENT_ID.httpHeaderName)       : clientID
+        ]
+    }
+
     /**
      * Validate a named parameter is in GUID format
      *
@@ -121,9 +139,11 @@ abstract class RestServiceClientSupport {
     protected static void validateGUID(final String name, final String value, final boolean allowEmpty)
             throws ClientException {
         if (!value && !allowEmpty) {
-            throw new ClientException(null, HttpEvent.InvalidClientInput, "Parameter '$name' should not be empty")
+            throw new ClientException(null, HttpEvent.InvalidClientInput,
+                    "Parameter '$name' should not be empty" as String)
         } else if (!value && !ValidationUtils.isValidGUID(value)) {
-            throw new ClientException(null, HttpEvent.InvalidClientInput, "Parameter '$name' is not in GUID format")
+            throw new ClientException(null, HttpEvent.InvalidClientInput,
+                    "Parameter '$name' is not in GUID format" as String)
         }
     }
 }
