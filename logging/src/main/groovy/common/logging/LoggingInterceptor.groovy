@@ -3,8 +3,8 @@ package common.logging
 import common.exceptions.ServiceException
 import common.logging.support.Fields
 import common.logging.support.MetadataHelper
-import common.support.Context
-import common.support.SystemProperties
+import common.utils.support.Context
+import common.utils.support.SystemProperties
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
 

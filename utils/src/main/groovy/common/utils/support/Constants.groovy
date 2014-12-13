@@ -1,4 +1,4 @@
-package common.support
+package common.utils.support
 
 /**
  * Common constants that can be used by any service

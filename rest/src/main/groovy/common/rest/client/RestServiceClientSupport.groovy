@@ -1,16 +1,16 @@
 package common.rest.client
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.type.CollectionType
+import com.fasterxml.jackson.databind.type.TypeFactory
+import common.api.StatusEntity
 import common.exceptions.ClientException
 import common.exceptions.HttpEvent
-import common.api.StatusEntity
 import common.rest.client.transport.DefaultResponseHandler
 import common.rest.client.transport.ITransport
 import common.utils.ValidationUtils
 import common.web.RequestHelper
 import org.apache.http.HttpStatus
-import org.codehaus.jackson.map.ObjectMapper
-import org.codehaus.jackson.map.type.CollectionType
-import org.codehaus.jackson.map.type.TypeFactory
 
 import static common.web.RequestHelper.Param.CLIENT_ID
 import static common.web.RequestHelper.Param.TRANSACTION_GUID

@@ -1,6 +1,6 @@
 package common.api
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import javax.xml.bind.annotation.XmlRootElement
 

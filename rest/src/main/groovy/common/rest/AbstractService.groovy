@@ -1,6 +1,6 @@
 package common.rest
 
-import common.support.SystemProperties
+import common.utils.support.SystemProperties
 import common.web.RequestHelper as RH
 
 import javax.ws.rs.core.HttpHeaders

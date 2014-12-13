@@ -1,19 +1,14 @@
 package common.rest.client.transport.support
 
-import org.codehaus.jackson.JsonParser
-import org.codehaus.jackson.Version
-import org.codehaus.jackson.map.*
-import org.codehaus.jackson.map.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy
-import org.codehaus.jackson.map.SerializationConfig.Feature
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion
-import org.codehaus.jackson.map.module.SimpleModule
-import org.codehaus.jackson.map.util.ISO8601DateFormat
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.Version
+import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat
+import com.fasterxml.jackson.datatype.joda.JodaModule
 
 import java.text.DateFormat
-
-import static org.codehaus.jackson.map.DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY
-import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES
-import static org.codehaus.jackson.map.SerializationConfig.Feature.*
 
 final class ObjectMapperProvider {
 
@@ -61,20 +56,20 @@ final class ObjectMapperProvider {
         if (config.dateFormat) {
             dConfig = dConfig.withDateFormat(config.dateFormat)
         }
-        mapper.setDeserializationConfig(dConfig)
-        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES,
+        mapper.deserializationConfig = dConfig
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
                 config.isFailOnUnknownProperties())
-        mapper.configure(ACCEPT_SINGLE_VALUE_AS_ARRAY,
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
                 config.isFailOnUnknownProperties())
 
         // Configure serialization
         SerializationConfig sConfig = mapper.serializationConfig
         sConfig = sConfig.withSerializationInclusion(config.serializationInclusion)
-        sConfig = cfgFeature(sConfig, INDENT_OUTPUT, false)
-        sConfig = cfgFeature(sConfig, SORT_PROPERTIES_ALPHABETICALLY, false)
-        sConfig = cfgFeature(sConfig, WRITE_DATES_AS_TIMESTAMPS, config.writeDatesAsTimestamps)
-        sConfig = cfgFeature(sConfig, WRITE_NULL_MAP_VALUES, config.writeNullMapValues)
-        sConfig = cfgFeature(sConfig, WRITE_EMPTY_JSON_ARRAYS, config.writeEmptyArrays)
+        sConfig = cfgFeature(sConfig, SerializationFeature.INDENT_OUTPUT, false)
+        sConfig = cfgFeature(sConfig, MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, false)
+        sConfig = cfgFeature(sConfig, SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, config.writeDatesAsTimestamps)
+        sConfig = cfgFeature(sConfig, SerializationFeature.WRITE_NULL_MAP_VALUES, config.writeNullMapValues)
+        sConfig = cfgFeature(sConfig, SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, config.writeEmptyArrays)
         if (config.dateFormat) {
             sConfig = sConfig.withDateFormat(config.dateFormat)
         }
@@ -83,7 +78,12 @@ final class ObjectMapperProvider {
         return mapper
     }
 
-    private static SerializationConfig cfgFeature(final SerializationConfig config, final Feature feature,
+    private static SerializationConfig cfgFeature(final SerializationConfig config, final MapperFeature feature,
+                                                  final boolean featureEnabled) {
+        return featureEnabled ? config.with(feature) : config.without(feature)
+    }
+
+    private static SerializationConfig cfgFeature(final SerializationConfig config, final SerializationFeature feature,
                                                   final boolean featureEnabled) {
         return featureEnabled ? config.with(feature) : config.without(feature)
     }
@@ -101,7 +101,7 @@ final class ObjectMapperProvider {
         /**
          * Determines whether encountering of unknown properties (ones that do not map to a
          * property, and there is no 'any setter' or handler that can handle it) should result
-         * in a failure (by throwing a {@link org.codehaus.jackson.map.JsonMappingException}) or not.<p> Default: <b>true</b>
+         * in a failure (by throwing a {@link com.fasterxml.jackson.databind.JsonMappingException}) or not.<p> Default: <b>true</b>
          */
         boolean failOnUnknownProperties = true
         /**
@@ -112,17 +112,17 @@ final class ObjectMapperProvider {
          * Holds the list of mpodules that are to be registered with the ObjectMapper.<p>
          * Default: no modules will be registered with the {@link org.codehaus.jackson.map.ObjectMapper}.
          */
-        final List<Module> modules = new ArrayList<Module>()
+        List<Module> modules = [new JodaModule()]
         /**
          * Holds the custom property naming strategy to use for the newly created
-         * {@link org.codehaus.jackson.map.ObjectMapper}.<p>Default: {@link org.codehaus.jackson.map.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy}.
+         * {@link com.fasterxml.jackson.databind.ObjectMapper}.<p>Default: {@link com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy}.
          */
-        PropertyNamingStrategy propertyNamingStrategy = new LowerCaseWithUnderscoresStrategy()
+        PropertyNamingStrategy propertyNamingStrategy = new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy()
         /**
          * Defines which properties of Java Beans are to be included in serialization.
          * <p>Default: <code>Inclusion.NON_NULL</code>
          */
-        Inclusion serializationInclusion = Inclusion.NON_NULL
+        JsonInclude.Include serializationInclusion = JsonInclude.Include.NON_NULL
         /**
          * Defines whether string properties should be trimmed during deserialization.
          * <p>Default: <code>true</code>
@@ -145,66 +145,6 @@ final class ObjectMapperProvider {
 
         static Config newInstance() {
             return new Config()
-        }
-
-        Config writeDatesAsTimestamps(final boolean writeDatesAsTimestamps) {
-            this.writeDatesAsTimestamps = writeDatesAsTimestamps
-            return this
-        }
-
-        Config failOnUnknownProperties(final boolean failOnUnknownProperties) {
-            this.failOnUnknownProperties = failOnUnknownProperties
-            return this
-        }
-
-        Config withDateFormat(final DateFormat dateFormat) {
-            this.dateFormat = dateFormat
-            return this
-        }
-
-        Config withoutDateFormat() {
-            return withDateFormat(null)
-        }
-
-        Config withModule(final Module module) {
-            modules.add(module)
-            return this
-        }
-
-        Config withModules(final Module... modules) {
-            if (modules != null) {
-                Collections.addAll(this.modules, modules)
-            }
-            return this
-        }
-
-        Config withPropertyNamingStrategy(final PropertyNamingStrategy propertyNamingStrategy) {
-            this.propertyNamingStrategy = propertyNamingStrategy
-            return this
-        }
-
-        Config withoutPropertyNamingStrategy() {
-            return withPropertyNamingStrategy(null)
-        }
-
-        Config withSerializationInclusion(final Inclusion serializationInclusion) {
-            this.serializationInclusion = serializationInclusion
-            return this
-        }
-
-        Config withDeserializationTrimStrings(final boolean deserializationTrimStrings) {
-            this.deserializationTrimStrings = deserializationTrimStrings
-            return this
-        }
-
-        Config writeEmptyArrays(final boolean writeEmptyArrays) {
-            this.writeEmptyArrays = writeEmptyArrays
-            return this
-        }
-
-        Config writeNullMapValues(final boolean writeNullMapValues) {
-            this.writeNullMapValues = writeNullMapValues
-            return this
         }
     }
 }

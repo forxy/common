@@ -1,6 +1,6 @@
 package common.logging.filter
 
-import common.support.Context
+import common.utils.support.Context
 
 /**
  * Filter based on Spring expression language

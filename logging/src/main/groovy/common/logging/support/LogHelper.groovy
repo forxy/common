@@ -1,6 +1,6 @@
 package common.logging.support
 
-import common.support.Context
+import common.utils.support.Context
 import common.utils.EncodingHelper
 
 /**

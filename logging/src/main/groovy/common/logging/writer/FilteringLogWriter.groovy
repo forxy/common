@@ -1,7 +1,7 @@
 package common.logging.writer
 
 import common.logging.filter.IFilter
-import common.support.Context
+import common.utils.support.Context
 
 /**
  * Writer applies configured filters before logging data

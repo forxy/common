@@ -3,8 +3,11 @@ dependencies {
     compile "org.codehaus.groovy:groovy-all:$rev_groovy"
 
     // --------------------- JSON ----------------------------------------
-    compile "org.codehaus.jackson:jackson-jaxrs:${rev_jackson}"
-    compile "org.codehaus.jackson:jackson-core-asl:${rev_jackson}"
+    compile "com.fasterxml.jackson.core:jackson-core:${rev_jackson_fasterxml}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${rev_jackson_fasterxml}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${rev_jackson_fasterxml}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${rev_jackson_fasterxml}"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${rev_jackson_fasterxml}"
 
     // --------------------- CXF -----------------------------------------
     compile "javax.ws.rs:javax.ws.rs-api:${rev_jax_rs_api}"

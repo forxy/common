@@ -4,8 +4,8 @@ import common.exceptions.ServiceException
 import common.logging.support.Fields
 import common.logging.wrapper.HttpRequestWrapper
 import common.logging.wrapper.HttpResponseWrapper
-import common.support.Context
-import common.support.SystemProperties
+import common.utils.support.Context
+import common.utils.support.SystemProperties
 
 import javax.servlet.*
 import javax.servlet.http.HttpServletRequest

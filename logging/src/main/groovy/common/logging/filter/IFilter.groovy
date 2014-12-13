@@ -1,6 +1,6 @@
 package common.logging.filter
 
-import common.support.Context
+import common.utils.support.Context
 
 /**
  * Filter interface to exclude some sensitive data from writing

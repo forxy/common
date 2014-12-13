@@ -1,11 +1,10 @@
 package common.web
 
-import common.support.SystemProperties
+import common.utils.support.SystemProperties
 
 import javax.servlet.ServletContext
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
-import java.util.jar.Attributes
 import java.util.jar.Manifest
 
 class SystemPropertiesSupportListener implements ServletContextListener {

@@ -4,8 +4,8 @@ import common.logging.extractor.IHttpFieldExtractor
 import common.logging.support.IExceptionHandler
 import common.logging.support.MetadataHelper
 import common.logging.writer.ILogWriter
-import common.support.Configuration
-import common.support.Context
+import common.utils.support.Configuration
+import common.utils.support.Context
 import org.springframework.beans.factory.InitializingBean
 
 import static common.logging.AbstractPerformanceLogger.Configs.IsPayloadLoggingEnabled

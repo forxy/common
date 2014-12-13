@@ -17,11 +17,4 @@ class SystemStatus implements Serializable {
     StatusType status
 
     List<ComponentStatus> componentStatuses
-
-    void addComponentStatuses(final ComponentStatus componentStatus) {
-        if (componentStatuses == null) {
-            componentStatuses = new ArrayList<ComponentStatus>()
-        }
-        componentStatuses.add(componentStatus)
-    }
 }

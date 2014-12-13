@@ -5,11 +5,11 @@
 
 package common.rest.client.transport
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.type.CollectionType
 import common.api.StatusEntity
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
-import org.codehaus.jackson.map.ObjectMapper
-import org.codehaus.jackson.map.type.CollectionType
 
 class DefaultResponseHandler<R> implements ITransport.IResponseHandler<R, StatusEntity> {
 

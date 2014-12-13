@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement
 /**
  * Exception message entity
  */
-@XmlRootElement(name = "error_message")
+@XmlRootElement(name = "error")
 class StatusEntity implements Serializable {
 
     int code = 200

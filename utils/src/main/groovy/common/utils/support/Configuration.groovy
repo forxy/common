@@ -1,4 +1,4 @@
-package common.support
+package common.utils.support
 /**
  * Bean class to collect all the basic configuration options used by the other system components
  */

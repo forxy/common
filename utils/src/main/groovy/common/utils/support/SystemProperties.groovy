@@ -1,4 +1,4 @@
-package common.support
+package common.utils.support
 
 abstract class SystemProperties {
 
