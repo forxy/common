@@ -8,6 +8,7 @@ package common.rest.client.transport
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.CollectionType
 import common.api.StatusEntity
+import common.exceptions.EventLogBase
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
 
@@ -32,26 +33,26 @@ class DefaultResponseHandler<R> implements ITransport.IResponseHandler<R, Status
     }
 
     @Override
-    ITransport.Response<R, StatusEntity> handle(final int statusCode, final String statusReason,
+    ITransport.Response<R, StatusEntity> handle(final EventLogBase event, final String statusReason,
                                                 final Map<String, String> responseHeaders,
                                                 final InputStream responseStream) throws IOException {
         final byte[] responseBytes = responseStream ? IOUtils.toByteArray(responseStream) : null
         String response = responseBytes ? new String(responseBytes, 'UTF-8') : null
         ITransport.Response<R, StatusEntity> result
 
-        if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+        if (event.httpCode == HttpStatus.SC_OK || event.httpCode == HttpStatus.SC_CREATED) {
             final R resource = collectionType ?
                     (R) mapper.readValue(responseBytes, collectionType) :
                     mapper.readValue(responseBytes, resourceType)
             result = new ITransport.Response<R, StatusEntity>(resource, null, responseHeaders)
             result.response = response
-        } else if (statusCode == HttpStatus.SC_NO_CONTENT) {
+        } else if (event.httpCode == HttpStatus.SC_NO_CONTENT) {
             result = new ITransport.Response<R, StatusEntity>(null, null, responseHeaders)
         } else {
-            final StatusEntity error = new StatusEntity(statusCode, response)
+            final StatusEntity error = new StatusEntity(event, response)
             result = new ITransport.Response<R, StatusEntity>(null, error, null)
         }
-        result.httpStatusCode = statusCode
+        result.httpStatusCode = event.httpCode
         result.httpStatusReason = statusReason
         return result
     }

@@ -110,11 +110,11 @@ abstract class RestServiceClientSupport {
     /**
      * Clients should overwrite this to return any custom exception that is to be thrown from the client.
      *
-     * @param error Error response retrieved from the service
+     * @param status Error response retrieved from the service
      * @return Client exception that is to be thrown
      */
-    protected static ClientException processErrorResponse(final StatusEntity error) {
-        return new ClientException(error, HttpEvent.UnexpectedException, error ? "Error code: $error.code" : 'N/A')
+    protected static ClientException processErrorResponse(final StatusEntity status) {
+        return new ClientException(status, HttpEvent.UnexpectedException, status ? "Error: $status.error" : 'N/A')
     }
 
     protected Map<String, String> buildHeaders(final String transactionGUID) throws ClientException {

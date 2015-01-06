@@ -25,7 +25,7 @@ class ServiceException extends BaseServiceException {
 
     void log(final Logger logger) {
         if (isEnabledFor(logger, eventLogID.logLevel)) {
-            ExceptionUtils.logEvent(logger, eventLogID, message, this)
+            ExceptionUtils.logEvent(logger, eventLogID, message, this, details)
         }
     }
 
@@ -35,7 +35,7 @@ class ServiceException extends BaseServiceException {
             if (null != additionalInfo) {
                 message.append(additionalInfo)
             }
-            ExceptionUtils.logEvent(logger, eventLogID, message.toString(), this)
+            ExceptionUtils.logEvent(logger, eventLogID, message.toString(), this, details)
         }
     }
 

@@ -9,49 +9,52 @@ enum HttpEvent implements EventLogBase {
     // Common events
     // -------------------------------------------------------------------
 
+    Success(200, 200, EventLogBase.Level.INFO, EventLogBase.EventType.Success,
+            'Operation complete successfully'),
+
     InvalidClientInput(400, 400, EventLogBase.EventType.InvalidInput,
-            'Operation is not allowed'),
+            'Invalid data provided'),
 
     ValidationException(400, 400, EventLogBase.EventType.InvalidInput,
-            'Validation rule violation. Details: %1$s'),
+            'Validation rule violation'),
 
     Unauthorized(401, 401, EventLogBase.EventType.InvalidInput,
-            'Operation is not allowed'),
+            'Not Authenticated'),
 
     AccessDenied(404, 403, EventLogBase.EventType.InvalidInput,
-            'Operation is not allowed'),
+            'Not enough permissions'),
 
     ResourceNotFound(404, 404, EventLogBase.EventType.InvalidInput,
-            'Operation is not allowed'),
+            'Requested resource not found'),
 
     UnexpectedException(500, 500, EventLogBase.EventType.InternalError,
-            'Unexpected unhandled exception. Details: %1$s'),
+            'Unexpected error during request processing'),
 
     // -------------------------------------------------------------------
     // Network events
     // -------------------------------------------------------------------
 
     SSLConnectivity(0, 403, EventLogBase.EventType.InternalError,
-    'Error during SSL communication. Details: %1$s'),
+            'Error during SSL communication'),
 
     SocketTimeout(501, 501, EventLogBase.EventType.InternalError,
-            'Timeout. Details: %1$s'),
+            'Timeout'),
 
     ServiceUnavailable(503, 503, EventLogBase.EventType.InternalError,
-            'Service is not available. Details: %1$s')
+            'Service is not available')
 
     private static final int BASE_EVENT_LOG_ID = 1000
 
-    private HttpEvent(int eventID, int httpCode, EventLogBase.EventType eventType, String formatString) {
-        this(eventID, httpCode, EventLogBase.Level.ERROR, eventType, formatString)
+    private HttpEvent(int eventID, int responseID, EventLogBase.EventType eventType, String messageFormat) {
+        this(eventID, responseID, EventLogBase.Level.ERROR, eventType, messageFormat)
     }
 
     private HttpEvent(int eventID, int httpCode, EventLogBase.Level logLevel, EventLogBase.EventType eventType,
-                      String formatString) {
+                      String messageFormat) {
         this.eventID = BASE_EVENT_LOG_ID + eventID
         this.httpCode = httpCode
         this.logLevel = logLevel
-        this.formatString = formatString
+        this.messageFormat = messageFormat
         this.eventType = eventType
     }
 }

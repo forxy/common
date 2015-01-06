@@ -303,7 +303,7 @@ class HttpClientTransport implements ITransport {
                 ITransport.Response handleResponse(final HttpResponse response) throws IOException {
 
                     final StatusLine statusLine = response.statusLine
-                    final int statusCode = statusLine.statusCode
+                    //TODO final int statusCode = statusLine.statusCode
                     final String statusReason = statusLine.reasonPhrase
 
                     // Populate response headers
@@ -322,7 +322,7 @@ class HttpClientTransport implements ITransport {
                         if (entity != null) {
                             responseStream = entity.content
                         }
-                        resource = responseHandler.handle(statusCode, statusReason, responseHeaders, responseStream)
+                        resource = responseHandler.handle(Success, statusReason, responseHeaders, responseStream)
                     } finally {
                         IOUtils.closeQuietly(responseStream)
                         EntityUtils.consume(entity)

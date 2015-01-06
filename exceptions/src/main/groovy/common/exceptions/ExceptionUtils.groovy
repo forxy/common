@@ -28,9 +28,10 @@ final class ExceptionUtils {
         return findCause(cause, clazz)
     }
 
-    static <T extends EventLogBase> void logEvent(final Logger logger, final T event,
-                                                  final String message, final Throwable cause) {
-        String record = "EventID=$event.eventID EventCode=$event $context\n $message"
+    static <T extends EventLogBase> void logEvent(final Logger logger, final T event, final String message,
+                                                  final Throwable cause, final String details) {
+        String record = "EventID=$event.eventID EventCode=$event " +
+                "${details ? " Details=$details" : ''} $context\n $message"
         switch (event.logLevel) {
             case EventLogBase.Level.ERROR:
                 logger.error(record, cause)

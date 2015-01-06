@@ -13,6 +13,9 @@ class DatabaseExceptionHandler implements IExceptionHandler {
 
     @Override
     void handleException(final Throwable t) {
+
+        if (t instanceof ServiceException) throw t
+
         String host = databaseHost ?: 'N/A'
 
         //noinspection ThrowableResultOfMethodCallIgnored

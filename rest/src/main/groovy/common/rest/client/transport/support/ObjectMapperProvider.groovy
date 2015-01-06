@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat
 import com.fasterxml.jackson.datatype.joda.JodaModule
+import groovy.transform.CompileStatic
 
 import java.text.DateFormat
 
@@ -32,6 +33,7 @@ final class ObjectMapperProvider {
         return getMapper(DEFAULT_CONFIG)
     }
 
+    @CompileStatic
     static ObjectMapper getMapper(final Config config) {
         final ObjectMapper mapper = new ObjectMapper()
 
@@ -52,11 +54,11 @@ final class ObjectMapperProvider {
         }
 
         // Configure deserialization
-        DeserializationConfig dConfig = mapper.deserializationConfig
+        DeserializationConfig deserializationConfig = mapper.deserializationConfig
         if (config.dateFormat) {
-            dConfig = dConfig.withDateFormat(config.dateFormat)
+            deserializationConfig = deserializationConfig.with(config.dateFormat)
         }
-        mapper.deserializationConfig = dConfig
+        mapper.setConfig(deserializationConfig)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
                 config.isFailOnUnknownProperties())
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
@@ -71,9 +73,9 @@ final class ObjectMapperProvider {
         sConfig = cfgFeature(sConfig, SerializationFeature.WRITE_NULL_MAP_VALUES, config.writeNullMapValues)
         sConfig = cfgFeature(sConfig, SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, config.writeEmptyArrays)
         if (config.dateFormat) {
-            sConfig = sConfig.withDateFormat(config.dateFormat)
+            sConfig = sConfig.with(config.dateFormat)
         }
-        mapper.serializationConfig = sConfig
+        mapper.setConfig(sConfig)
 
         return mapper
     }
@@ -101,7 +103,8 @@ final class ObjectMapperProvider {
         /**
          * Determines whether encountering of unknown properties (ones that do not map to a
          * property, and there is no 'any setter' or handler that can handle it) should result
-         * in a failure (by throwing a {@link com.fasterxml.jackson.databind.JsonMappingException}) or not.<p> Default: <b>true</b>
+         * in a failure (by throwing a {@link com.fasterxml.jackson.databind.JsonMappingException}) or not.<p>
+         * Default: <b>true</b>
          */
         boolean failOnUnknownProperties = true
         /**
@@ -110,12 +113,13 @@ final class ObjectMapperProvider {
         DateFormat dateFormat = new ISO8601DateFormat()
         /**
          * Holds the list of mpodules that are to be registered with the ObjectMapper.<p>
-         * Default: no modules will be registered with the {@link org.codehaus.jackson.map.ObjectMapper}.
+         * Default: no modules will be registered with the {@link com.fasterxml.jackson.databind.ObjectMapper}.
          */
         List<Module> modules = [new JodaModule()]
         /**
          * Holds the custom property naming strategy to use for the newly created
-         * {@link com.fasterxml.jackson.databind.ObjectMapper}.<p>Default: {@link com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy}.
+         * {@link com.fasterxml.jackson.databind.ObjectMapper}.<p>
+         * Default: {@link com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy}.
          */
         PropertyNamingStrategy propertyNamingStrategy = new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy()
         /**

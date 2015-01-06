@@ -1,7 +1,7 @@
 dependencies {
-    // --------------------- GROOVY --------------------------------------
-    compile "org.codehaus.groovy:groovy-all:$rev_groovy"
-
     // --------------------- PROJECTS ------------------------------------
     compile project(":common.utils")
+
+    // --------------------- GROOVY --------------------------------------
+    compile "org.codehaus.groovy:groovy-all:$rev_groovy"
 }

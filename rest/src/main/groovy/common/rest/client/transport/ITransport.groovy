@@ -1,6 +1,7 @@
 package common.rest.client.transport
 
 import common.exceptions.ClientException
+import common.exceptions.EventLogBase
 
 interface ITransport {
 
@@ -21,7 +22,7 @@ interface ITransport {
     }
 
     interface IResponseHandler<R, E> {
-        Response<R, E> handle(int statusCode, String statusReason, Map<String, String> responseHeaders,
+        Response<R, E> handle(EventLogBase event, String statusReason, Map<String, String> responseHeaders,
                               InputStream responseStream) throws IOException
     }
 

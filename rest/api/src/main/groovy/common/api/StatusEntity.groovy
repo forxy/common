@@ -1,14 +1,15 @@
 package common.api
 
-import javax.xml.bind.annotation.XmlRootElement
+import common.exceptions.EventLogBase
+import groovy.transform.Canonical
 
 /**
  * Exception message entity
  */
-@XmlRootElement(name = "error")
+@Canonical
 class StatusEntity implements Serializable {
 
-    int code = 200
+    EventLogBase error
 
     List<String> messages
 
@@ -19,18 +20,18 @@ class StatusEntity implements Serializable {
         this.messages = Collections.singletonList(message)
     }
 
-    StatusEntity(final int code, final String message) {
-        this.code = code
+    StatusEntity(final EventLogBase error, final String message) {
+        this.error = error
         this.messages = Collections.singletonList(message)
     }
 
-    StatusEntity(final int code, final List<String> messages) {
-        this.code = code
+    StatusEntity(final EventLogBase error, final List<String> messages) {
+        this.error = error
         this.messages = messages
     }
 
-    StatusEntity(final int code, final Throwable cause) {
-        this.code = code
+    StatusEntity(final EventLogBase error, final Throwable cause) {
+        this.error = error
         this.messages = Collections.singletonList(cause.getMessage())
     }
 }

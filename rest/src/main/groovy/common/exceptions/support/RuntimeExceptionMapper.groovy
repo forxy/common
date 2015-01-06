@@ -7,7 +7,6 @@ package common.exceptions.support
 
 import common.exceptions.ServiceException
 import common.exceptions.ValidationException
-import org.apache.commons.lang.exception.ExceptionUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -17,8 +16,6 @@ import javax.ws.rs.ext.ExceptionMapper
 import javax.ws.rs.ext.Provider
 
 import static common.exceptions.HttpEvent.UnexpectedException
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR
-import static javax.ws.rs.core.Response.Status.fromStatusCode
 
 /**
  * This is the provider class which handles the {@link RuntimeException} and generates the response as per the details
@@ -38,43 +35,24 @@ class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
         Response response
         if (re instanceof ValidationException) {
             ex = (ValidationException) re
-            response = ResponseBuilder.build(
-                    fromStatusCode(ex.eventLogID.httpCode),
-                    ((ValidationException) re).messages
-            )
+            response = ResponseBuilder.build(ex.eventLogID, ((ValidationException) re).messages)
         } else if (re instanceof ServiceException) {
             ex = (ServiceException) re
-            response = ResponseBuilder.build(
-                    fromStatusCode(ex.eventLogID.httpCode),
-                    ex.eventLogID.eventID,
-                    ex.message
-            )
+            response = ResponseBuilder.build(ex.eventLogID, ex.message)
         } else {
-            ex = new ServiceException(re,
-                    UnexpectedException,
-                    ExceptionUtils.getRootCauseMessage(re)
-            )
-            response = ResponseBuilder.build(
-                    INTERNAL_SERVER_ERROR,
-                    ex.statusCode,
-                    ExceptionUtils.getFullStackTrace(re)
-            )
+            ex = new ServiceException(re, UnexpectedException)
+            response = ResponseBuilder.build(ex.eventLogID, ex.message)
         }
 
         if (re instanceof WebApplicationException) {
             if (re.cause instanceof ServiceException) {
                 ex = (ServiceException) re.cause
-                response = ResponseBuilder.build(
-                        INTERNAL_SERVER_ERROR,
-                        ex.eventLogID.eventID,
-                        ex.message
-                )
+                response = ResponseBuilder.build(ex.eventLogID, ex.message)
             } else {
-                ex = new ServiceException(re, UnexpectedException, ExceptionUtils.getRootCauseMessage(re))
+                ex = new ServiceException(re, UnexpectedException)
                 response = ResponseBuilder.build(
-                        fromStatusCode(((WebApplicationException) re).response.status),
-                        ((WebApplicationException) re).response.status,
-                        ExceptionUtils.getFullStackTrace(re)
+                        ex.eventLogID,
+                        ((WebApplicationException) re).response.status, ex.message
                 )
             }
         }

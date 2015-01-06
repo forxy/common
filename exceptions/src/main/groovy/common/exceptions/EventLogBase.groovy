@@ -3,13 +3,13 @@ package common.exceptions
 trait EventLogBase {
 
     Level logLevel
-    String formatString
+    String messageFormat
     int eventID
     int httpCode
     EventType eventType
 
     public String getMessage(final Object... arguments) {
-        return arguments != null && arguments.length > 0 ? String.format(formatString, arguments) : formatString
+        return arguments != null && arguments.length > 0 ? String.format(messageFormat, arguments) : messageFormat
     }
 
     static enum Level {

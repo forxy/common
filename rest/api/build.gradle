@@ -1,14 +1,17 @@
 dependencies {
+    // --------------------- PROJECTS ------------------------------------
+    compile project(":common.exceptions")
+
     // --------------------- GROOVY --------------------------------------
     compile "org.codehaus.groovy:groovy-all:$rev_groovy"
 
     // --------------------- JSON ----------------------------------------
-    compile "com.fasterxml.jackson.core:jackson-core:${rev_jackson_fasterxml}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${rev_jackson_fasterxml}"
-    compile "com.fasterxml.jackson.core:jackson-annotations:${rev_jackson_fasterxml}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${rev_jackson_fasterxml}"
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${rev_jackson_fasterxml}"
+    compile "com.fasterxml.jackson.core:jackson-core:$rev_jackson"
+    compile "com.fasterxml.jackson.core:jackson-databind:$rev_jackson"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$rev_jackson"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$rev_jackson"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$rev_jackson"
 
     // --------------------- CXF -----------------------------------------
-    compile "javax.ws.rs:javax.ws.rs-api:${rev_jax_rs_api}"
+    compile "javax.ws.rs:javax.ws.rs-api:$rev_jax_rs_api"
 }
