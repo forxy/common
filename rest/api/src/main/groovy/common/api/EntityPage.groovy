@@ -1,22 +1,20 @@
 package common.api
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import groovy.transform.Canonical
 
 import javax.xml.bind.annotation.XmlRootElement
 
 /**
  * EntityPage class container for generic data
  */
-@XmlRootElement(name = 'page')
+@Canonical
 @JsonIgnoreProperties(['numberOfElements', 'firstPage', 'lastPage', 'totalPages'])
 class EntityPage<T> implements Serializable, Iterable<T> {
 
     int size
-
     int number
-
     long total
-
     List<T> content = new ArrayList<T>()
 
     EntityPage() {
@@ -32,7 +30,7 @@ class EntityPage<T> implements Serializable, Iterable<T> {
      * @param total the total amount of items available
      */
     EntityPage(final List<T> content, final int size, final int number, final long total) {
-        if (null != content) {
+        if (content) {
             this.content.addAll(content)
         }
         this.total = total
@@ -47,7 +45,7 @@ class EntityPage<T> implements Serializable, Iterable<T> {
      * @param content must not be {@literal null}.
      */
     EntityPage(final List<T> content) {
-        this(content, null == content ? 0 : content.size(), 0, null == content ? 0 : content.size())
+        this(content, !content ? 0 : content.size(), 0, !content ? 0 : content.size())
     }
 
     /**

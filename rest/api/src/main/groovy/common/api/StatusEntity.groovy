@@ -10,7 +10,6 @@ import groovy.transform.Canonical
 class StatusEntity implements Serializable {
 
     EventLogBase error
-
     List<String> messages
 
     StatusEntity() {
