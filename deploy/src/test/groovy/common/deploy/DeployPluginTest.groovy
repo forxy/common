@@ -1,17 +1,18 @@
 package common.deploy
 
+import common.deploy.task.CreateWebContextTask
+import common.deploy.task.UpdateServerXmlTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test
-import common.deploy.task.CreateWebContextTask
-import common.deploy.task.UpdateServerXmlTask
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertTrue
 
 /**
- * Created by Tiger on 08.05.14.
+ * Gradle deploy plugin test
  */
 class DeployPluginTest {
     def static final TOMCAT_HOME = this.getClass().getResource("/tomcatHome").path

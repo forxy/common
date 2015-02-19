@@ -1,1 +1,4 @@
-apply plugin: 'java'
+dependencies {
+    // --------------------- GROOVY --------------------------------------
+    compile "org.codehaus.groovy:groovy-all:$rev_groovy"
+}

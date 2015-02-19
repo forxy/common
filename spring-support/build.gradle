@@ -1,8 +1,0 @@
-apply plugin: 'java'
-
-dependencies {
-    // --------------------- SPRING --------------------------------------
-    compile "org.springframework:spring-beans:$rev_spring"
-    compile "org.springframework:spring-context:$rev_spring"
-    compile "org.springframework:spring-test:$rev_spring"
-}

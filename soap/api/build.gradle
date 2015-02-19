@@ -1,3 +1,0 @@
-artifacts {
-    'default' file: file('src/xsd/v1/common.types.v1.xsd'), name: 'common.types.v1', type: 'xsd'
-}

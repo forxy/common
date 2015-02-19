@@ -6,7 +6,7 @@ import org.junit.Test
 import static org.junit.Assert.*
 
 /**
- * Created by Tiger on 08.05.14.
+ * Test to check server.xml file generation
  */
 class UpdateServerXmlTest {
     def static final TOMCAT_HOME = this.getClass().getResource("/tomcatHome").path

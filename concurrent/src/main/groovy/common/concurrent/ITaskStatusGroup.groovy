@@ -1,11 +1,11 @@
-package common.concurrent;
+package common.concurrent
 
 public interface ITaskStatusGroup {
     /**
      * This method will return when all the operations that have been associated
      * with this group have completed.
      */
-    void waitAllTasksComplete();
+    void waitAllTasksComplete()
 
     /**
      * This method will return when all the operations that have been associated
@@ -16,7 +16,7 @@ public interface ITaskStatusGroup {
      *                this time, this method returns false.
      * @return True if all operations complete before the timeout, false otherwise.
      */
-    boolean waitAllTasksComplete(final long timeout);
+    boolean waitAllTasksComplete(final long timeout)
 
     /**
      * This method will return when any operation associated with this status group
@@ -28,7 +28,7 @@ public interface ITaskStatusGroup {
      * completes after this method returns and before you check it.  Being aware of
      * this behavior will allow for smooth running.
      */
-    void waitAnyOperationCompletes();
+    void waitAnyOperationCompletes()
 
     /**
      * This method will return when any operation associated with this status group
@@ -45,5 +45,7 @@ public interface ITaskStatusGroup {
      *                this time, this method returns false.
      * @return True if an operation completed before the timeout, false otherwise.
      */
-    boolean waitAnyOperationCompletes(final long timeout);
+    boolean waitAnyOperationCompletes(final long timeout)
+
+    void operationStatusAdd(ITaskStatus status)
 }

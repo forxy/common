@@ -30,7 +30,7 @@ class ValidationException extends ServiceException {
     }
 
     static ValidationException build(final ValidationFailedException e) {
-        final List<String> messages = new ArrayList<String>()
+        final List<String> messages = []
         Throwable cause = e
         while (cause) {
             messages << cause.message

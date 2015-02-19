@@ -7,4 +7,10 @@ dependencies {
 
     // --------------------- COMMONS -------------------------------------
     compile "commons-lang:commons-lang:$rev_commons_lang"
+
+    // --------------------- TESTS ---------------------------------------
+
+    testCompile ("org.spockframework:spock-core:$rev_spok") {
+        exclude group: 'org.codehaus.groovy'
+    }
 }

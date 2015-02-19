@@ -1,4 +1,4 @@
-package common.concurrent;
+package common.concurrent
 
 /**
  * Task execution status
@@ -9,19 +9,19 @@ public interface ITaskStatus {
      *
      * @return task
      */
-    ITask getTask();
+    ITask getTask()
 
     /**
      * Gets the unhandled Throwable if it exists.
      *
      * @return Returns the unhandled throwable.
      */
-    Throwable getUnhandledThrowable();
+    Throwable getUnhandledThrowable()
 
     /**
      * Determines whether or not the current activity operation is running.
      *
      * @return True if the current operation is running.
      */
-    boolean isRunning();
+    boolean isRunning()
 }

@@ -52,7 +52,8 @@ class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
                 ex = new ServiceException(re, UnexpectedException)
                 response = ResponseBuilder.build(
                         ex.eventLogID,
-                        ((WebApplicationException) re).response.status, ex.message
+                        ((WebApplicationException) re).response.status,
+                        ex.message
                 )
             }
         }
