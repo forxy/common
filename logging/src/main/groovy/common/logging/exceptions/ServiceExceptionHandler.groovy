@@ -13,6 +13,9 @@ class ServiceExceptionHandler implements IExceptionHandler {
 
     @Override
     void handleException(Throwable t) {
+
+        if (t instanceof ServiceException) throw t
+
         String host = remoteServiceHost ?: 'N/A'
 
         //noinspection ThrowableResultOfMethodCallIgnored

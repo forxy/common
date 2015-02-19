@@ -65,7 +65,7 @@ class SpringELFieldExtractor implements IHttpFieldExtractor, IFieldExtractor {
         final Map<String, Object> result = new LinkedHashMap<String, Object>()
         try {
             final StandardEvaluationContext context = new StandardEvaluationContext()
-            context.setBeanResolver(beanResolver)
+            context.beanResolver = beanResolver
             context.setVariable('payload', EncodingHelper.toUTFString(payload))
             context.setVariable('frame', frame)
             context.setVariable('request', request)

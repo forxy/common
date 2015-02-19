@@ -30,7 +30,7 @@ final class ExceptionUtils {
 
     static <T extends EventLogBase> void logEvent(final Logger logger, final T event, final String message,
                                                   final Throwable cause, final String details) {
-        String record = "EventID=$event.eventID EventCode=$event " +
+        String record = "EventID=$event.eventID EventCode=$event" +
                 "${details ? " Details=$details" : ''} $context\n $message"
         switch (event.logLevel) {
             case EventLogBase.Level.ERROR:
