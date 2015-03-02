@@ -72,7 +72,7 @@ class HttpResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     PrintWriter getWriter() throws IOException {
-        if (writer == null) {
+        if (!writer) {
             writer = new TeePrintWriter(super.writer,
                     new PrintWriter(new OutputStreamWriter(bos, characterEncoding)))
         }
@@ -81,7 +81,7 @@ class HttpResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     ServletOutputStream getOutputStream() throws IOException {
-        if (outputStream == null) {
+        if (!outputStream) {
             final TeeOutputStream tos = new TeeOutputStream(super.outputStream, bos)
             outputStream = new ServletOutputStream() {
                 @Override

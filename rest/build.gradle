@@ -17,4 +17,10 @@ dependencies {
 
     // --------------------- OBJECT VALIDATION ---------------------------
     compile "net.sf.oval:oval:$rev_oval"
+
+    // --------------------- TESTS ---------------------------------------
+
+    testCompile ("org.spockframework:spock-core:$rev_spok") {
+        exclude group: 'org.codehaus.groovy'
+    }
 }

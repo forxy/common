@@ -16,7 +16,7 @@ class HttpRequestWrapper extends HttpServletRequestWrapper {
 
     HttpRequestWrapper(final HttpServletRequest req) throws IOException {
         super(req)
-        requestBody = IOUtils.toByteArray(req.getInputStream())
+        requestBody = IOUtils.toByteArray req.inputStream
 
         inputStream = new ServletInputStream() {
             final InputStream is = new ByteArrayInputStream(requestBody)
@@ -30,9 +30,9 @@ class HttpRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     BufferedReader getReader() throws IOException {
-        if (reader == null) {
-            final Charset charset = EncodingHelper.getCharsetByAlias(getCharacterEncoding())
-            reader = new BufferedReader(new InputStreamReader(getInputStream(), charset))
+        if (!reader) {
+            final Charset charset = EncodingHelper.getCharsetByAlias(characterEncoding)
+            reader = new BufferedReader(new InputStreamReader(inputStream, charset))
         }
         return reader
     }

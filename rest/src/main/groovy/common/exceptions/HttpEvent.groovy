@@ -53,7 +53,7 @@ enum HttpEvent implements EventLogBase {
                       String messageFormat) {
         this.eventID = BASE_EVENT_LOG_ID + eventID
         this.httpCode = httpCode
-        this.logLevel = logLevel
+        this.logLevel = logLevel as EventLogBase.Level
         this.messageFormat = messageFormat
         this.eventType = eventType
     }
