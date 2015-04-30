@@ -3,6 +3,7 @@ package common.logging.wrapper
 import org.apache.commons.io.output.TeeOutputStream
 
 import javax.servlet.ServletOutputStream
+import javax.servlet.WriteListener
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletResponseWrapper
 
@@ -97,6 +98,16 @@ class HttpResponseWrapper extends HttpServletResponseWrapper {
                 @Override
                 void write(final int arg) throws IOException {
                     tos.write(arg)
+                }
+
+                @Override
+                boolean isReady() {
+                    return tos != null
+                }
+
+                @Override
+                void setWriteListener(WriteListener writeListener) {
+
                 }
             }
         }

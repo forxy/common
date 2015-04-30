@@ -3,6 +3,7 @@ package common.logging.wrapper
 import common.utils.EncodingHelper
 import org.apache.commons.io.IOUtils
 
+import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
@@ -24,6 +25,20 @@ class HttpRequestWrapper extends HttpServletRequestWrapper {
             @Override
             int read() throws IOException {
                 return is.read()
+            }
+
+            @Override
+            boolean isFinished() {
+                return !is.available()
+            }
+
+            @Override
+            boolean isReady() {
+                return is != null
+            }
+
+            @Override
+            void setReadListener(ReadListener readListener) {
             }
         }
     }
