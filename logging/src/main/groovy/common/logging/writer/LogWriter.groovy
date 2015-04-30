@@ -1,7 +1,7 @@
 package common.logging.writer
 
 import common.logging.support.LogHelper
-import common.utils.support.Context
+import common.utils.support.ContextData
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -21,7 +21,7 @@ class LogWriter implements ILogWriter {
     }
 
     @Override
-    void log(final Context.ContextData data) {
+    void log(final ContextData data) {
         logger.info(LogHelper.contextDataToLogString(data))
     }
 }

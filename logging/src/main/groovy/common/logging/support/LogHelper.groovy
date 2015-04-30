@@ -1,7 +1,7 @@
 package common.logging.support
 
-import common.utils.support.Context
 import common.utils.EncodingHelper
+import common.utils.support.ContextData
 
 /**
  * Log helper to convert logging data into string
@@ -20,7 +20,7 @@ abstract class LogHelper {
         KEYS_HTTP.add(Fields.ResponseHeaders.name())
     }
 
-    static String contextDataToLogString(final Context.ContextData data) {
+    static String contextDataToLogString(final ContextData data) {
         final StringBuilder sb = new StringBuilder(1024)
         final StringBuilder ht = new StringBuilder(1024)
         final StringBuilder pl = new StringBuilder(4096)

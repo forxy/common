@@ -1,6 +1,6 @@
 package common.logging.filter
 
-import common.utils.support.Context
+import common.utils.support.ContextData
 
 /**
  * Filter based on JSON path
@@ -8,7 +8,7 @@ import common.utils.support.Context
 class JSONPathFilter implements IFilter {
 
     @Override
-    Context.ContextData doFilter(Context.ContextData data) {
+    ContextData doFilter(ContextData data) {
         return data
     }
 }

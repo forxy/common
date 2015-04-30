@@ -5,6 +5,7 @@ import common.rest.SystemStatusController
 import common.status.ISystemStatusService
 import common.status.api.StatusType
 import common.status.api.SystemStatus
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -18,6 +19,7 @@ import javax.ws.rs.core.UriInfo
 @Subject([SystemStatusController, AbstractService])
 class SystemStatusControllerSpec extends Specification {
 
+    @Ignore
     def "Service controller should return a valid JAX-RS response"() {
         given:
         SystemStatusController controller = new SystemStatusController(
